@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>
+
+Welcome
+
+{{current_user.fullname}}
+
+</h2>
+
+<div class="mb-3">
+
+<a
+class="btn btn-success"
+href="/clock-in">
+
+Clock In
+
+</a>
+
+<a
+class="btn btn-danger"
+href="/clock-out">
+
+Clock Out
+
+</a>
+
+</div>
+
+<div class="mb-3">
+
+<a
+class="btn btn-primary"
+href="/attendance-history">
+
+Attendance History
+
+</a>
+
+<a
+class="btn btn-warning"
+href="/apply-leave">
+
+Apply Leave
+
+</a>
+
+</div>
+
+{% endblock %}

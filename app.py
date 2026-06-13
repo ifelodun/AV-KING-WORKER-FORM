@@ -645,8 +645,8 @@ def create_admin():
         "create_admin.html"
     )
 
-@app.route("/")
-def home():
+@app.route("/dashboard_home")
+def dashboard_home():
 
     settings = CompanySettings.query.first()
 

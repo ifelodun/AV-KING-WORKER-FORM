@@ -696,7 +696,7 @@ with app.app_context():
             company_name=
             "AV KING VET DRUG VENTURE",
 
-            phone=
+            phone_number=
             "08087981439",
 
             address=

@@ -2549,14 +2549,48 @@ def send_email(
 
         print(e)
 
-send_email(
+@app.route(
+    "/schedule-interview/<int:id>",
+    methods=["GET", "POST"]
+)
+@login_required
+def schedule_interview(id):
 
-    application.email,
+    application = Application.query.get_or_404(id)
 
-    "Interview Invitation",
+    if request.method == "POST":
 
-    f"""
+        interview = Interview(
 
+            application_id=application.id,
+
+            interview_date=request.form[
+                "interview_date"
+            ],
+
+            interview_time=request.form[
+                "interview_time"
+            ],
+
+            interviewer=request.form[
+                "interviewer"
+            ],
+
+            venue=request.form[
+                "venue"
+            ]
+        )
+
+        db.session.add(interview)
+        db.session.commit()
+
+        send_email(
+
+            application.email,
+
+            "Interview Invitation",
+
+            f"""
 Dear {application.fullname},
 
 You have been invited for an interview.
@@ -2572,38 +2606,76 @@ Venue:
 
 AV KING VET DRUG VENTURE
 """
+        )
+
+        flash("Interview Scheduled")
+
+        return redirect("/interviews")
+
+    return render_template(
+        "schedule_interview.html",
+        application=application
+    )
+
+
+
+@app.route(
+    "/approve-application/<int:id>"
 )
+@login_required
+def approve_application(id):
 
-send_email(
+    application = Application.query.get_or_404(id)
 
-    application.email,
+    application.status = "Approved"
 
-    "Application Approved",
+    db.session.commit()
 
-    f"""
+    send_email(
 
+        application.email,
+
+        "Application Approved",
+
+        f"""
 Congratulations.
 
 Your application has been approved.
 
 Application Number:
-
 {application.application_number}
 
 You may now create your worker account.
 
 AV KING VET DRUG VENTURE
 """
+    )
+
+    flash("Application Approved")
+
+    return redirect("/applications")
+
+
+
+@app.route(
+    "/reject-application/<int:id>"
 )
+@login_required
+def reject_application(id):
 
-send_email(
+    application = Application.query.get_or_404(id)
 
-    application.email,
+    application.status = "Rejected"
 
-    "Application Update",
+    db.session.commit()
 
-    """
+    send_email(
 
+        application.email,
+
+        "Application Update",
+
+        f"""
 Thank you for applying.
 
 Unfortunately your application
@@ -2611,7 +2683,12 @@ was not successful.
 
 AV KING VET DRUG VENTURE
 """
-)
+    )
+
+    flash("Application Rejected")
+
+    return redirect("/applications")
+    
 
 class Payroll(db.Model):
 

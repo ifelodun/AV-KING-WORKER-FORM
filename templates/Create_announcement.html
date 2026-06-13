@@ -2,26 +2,70 @@
 
 {% block content %}
 
-<h2>Create Announcement</h2>
+<div class="container mt-4">
 
-<form method="POST">
+    <div class="card">
 
-    <input type="text"
-           name="title"
-           class="form-control mb-2"
-           placeholder="Title"
-           required>
+        <div class="card-header bg-primary text-white">
 
-    <textarea name="message"
-              class="form-control mb-2"
-              rows="6"
-              placeholder="Announcement"
-              required></textarea>
+            <h4>Create Announcement</h4>
 
-    <button class="btn btn-success">
-        Publish
-    </button>
+        </div>
 
-</form>
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Title
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Message
+                    </label>
+
+                    <textarea
+                        name="message"
+                        class="form-control"
+                        rows="6"
+                        required></textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Send Announcement
+
+                </button>
+
+                <a
+                    href="/announcements"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

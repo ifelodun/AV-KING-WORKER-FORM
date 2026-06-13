@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Company Settings</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                <!-- COMPANY NAME -->
+                <label>Company Name</label>
+                <input type="text"
+                       name="company_name"
+                       class="form-control mb-2"
+                       value="{{ settings.company_name }}">
+
+                <!-- EMAIL -->
+                <label>Company Email</label>
+                <input type="email"
+                       name="company_email"
+                       class="form-control mb-2"
+                       value="{{ settings.company_email or '' }}">
+
+                <!-- PHONE -->
+                <label>Phone Number</label>
+                <input type="text"
+                       name="phone_number"
+                       class="form-control mb-2"
+                       value="{{ settings.phone_number }}">
+
+                <!-- ADDRESS -->
+                <label>Address</label>
+                <textarea name="address"
+                          class="form-control mb-2">{{ settings.address }}</textarea>
+
+                <!-- THEME -->
+                <label>Theme</label>
+                <select name="theme" class="form-control mb-2">
+                    <option value="light" {% if settings.theme == "light" %}selected{% endif %}>Light</option>
+                    <option value="dark" {% if settings.theme == "dark" %}selected{% endif %}>Dark</option>
+                </select>
+
+                <!-- EMPLOYEE PREFIX -->
+                <label>Employee Prefix</label>
+                <input type="text"
+                       name="employee_prefix"
+                       class="form-control mb-2"
+                       value="{{ settings.employee_prefix }}">
+
+                <!-- LATE TIME -->
+                <label>Late Time</label>
+                <input type="time"
+                       name="late_time"
+                       class="form-control mb-2"
+                       value="{{ settings.late_time }}">
+
+                <!-- RECRUITMENT -->
+                <div class="form-check mb-3">
+
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="recruitment_open"
+                           {% if settings.recruitment_open %}checked{% endif %}>
+
+                    <label class="form-check-label">
+                        Recruitment Open
+                    </label>
+
+                </div>
+
+                <!-- LOGO -->
+                <label>Company Logo</label>
+
+                {% if settings.logo %}
+                    <div class="mb-2">
+                        <img src="{{ url_for('static', filename='uploads/' + settings.logo) }}"
+                             width="120">
+                    </div>
+                {% endif %}
+
+                <input type="file"
+                       name="logo"
+                       class="form-control mb-3">
+
+                <!-- SUBMIT -->
+                <button class="btn btn-primary">
+                    Save Settings
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

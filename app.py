@@ -1504,53 +1504,7 @@ def interviews():
         interviews=interviews
     )
 
-@app.route(
-    "/approve-application/<int:id>"
-)
-@login_required
-def approve_application(id):
 
-    application = \
-    Application.query.get_or_404(
-        id
-    )
-
-    application.status = \
-    "approved"
-
-    db.session.commit()
-
-    flash(
-        "Application Approved"
-    )
-
-    return redirect(
-        "/applications"
-    )
-
-@app.route(
-    "/reject-application/<int:id>"
-)
-@login_required
-def reject_application(id):
-
-    application = \
-    Application.query.get_or_404(
-        id
-    )
-
-    application.status = \
-    "rejected"
-
-    db.session.commit()
-
-    flash(
-        "Application Rejected"
-    )
-
-    return redirect(
-        "/applications"
-    )
 
 @app.route(
     "/worker-register",

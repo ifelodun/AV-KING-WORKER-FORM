@@ -1383,38 +1383,101 @@ class Job(db.Model):
         default="open"
     )
 
+    salary = db.Column(
+        db.String(100)
+    )
+    
     created_at = db.Column(
         db.DateTime,
         default=nigeria_time
   )
 
-@app.route("/delete-job/<int:id>")
+@app.route(
+    "/delete-job/<int:id>"
+)
 @login_required
 def delete_job(id):
+
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+        flash("Access Denied")
+        return redirect("/dashboard")
 
     job = Job.query.get_or_404(id)
 
     db.session.delete(job)
+
     db.session.commit()
 
-    flash("Job deleted")
+    flash(
+        "Job Deleted Successfully"
+    )
 
     return redirect("/jobs")
 
-@app.route("/edit-job/<int:id>", methods=["POST"])
+
+@app.route(
+    "/edit-job/<int:id>",
+    methods=["GET", "POST"]
+)
 @login_required
 def edit_job(id):
 
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+        flash("Access Denied")
+        return redirect("/dashboard")
+
     job = Job.query.get_or_404(id)
 
-    job.title = request.form["title"]
-    job.description = request.form["description"]
+    if request.method == "POST":
 
-    db.session.commit()
+        job.title = request.form["title"]
 
-    flash("Job updated")
+        job.department = request.form[
+            "department"
+        ]
 
-    return redirect("/jobs")
+        job.description = request.form[
+            "description"
+        ]
+
+        job.requirements = request.form[
+            "requirements"
+        ]
+
+        job.salary = request.form[
+            "salary"
+        ]
+
+        job.location = request.form[
+            "location"
+        ]
+
+        job.deadline = request.form[
+            "deadline"
+        ]
+
+        job.status = request.form[
+            "status"
+        ]
+
+        db.session.commit()
+
+        flash(
+            "Job Updated Successfully"
+        )
+
+        return redirect("/jobs")
+
+    return render_template(
+        "edit_job.html",
+        job=job
+    )
 
 class Application(db.Model):
 
@@ -1544,46 +1607,30 @@ def careers():
 @login_required
 def create_job():
 
-    if not admin_required():
-
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+        flash("Access Denied")
         return redirect("/dashboard")
 
     if request.method == "POST":
 
         job = Job(
-
             title=request.form["title"],
-
-            department=request.form[
-                "department"
-            ],
-
-            description=request.form[
-                "description"
-            ],
-
-            requirements=request.form[
-                "requirements"
-            ],
-
-            closing_date=datetime.strptime(
-                request.form[
-                    "closing_date"
-                ],
-                "%Y-%m-%d"
-            )
+            department=request.form["department"],
+            description=request.form["description"],
+            requirements=request.form["requirements"],
+            salary=request.form["salary"],
+            location=request.form["location"],
+            deadline=request.form["deadline"],
+            status=request.form["status"]
         )
 
         db.session.add(job)
-
         db.session.commit()
 
-        log_action(
-            current_user.username,
-            f"Created Job {job.title}"
-        )
-
-        flash("Job Created")
+        flash("Job Created Successfully")
 
         return redirect("/jobs")
 
@@ -1591,30 +1638,17 @@ def create_job():
         "create_job.html"
     )
 
-@app.route("/jobs", methods=["GET", "POST"])
+
+@app.route("/jobs")
 @login_required
 def jobs():
 
-    if current_user.role != "admin":
-        flash("Access denied")
-        return redirect("/")
-
-    if request.method == "POST":
-
-        new_job = Job(
-            title=request.form["title"],
-            description=request.form["description"]
-        )
-
-        db.session.add(new_job)
-        db.session.commit()
-
-        flash("Job added successfully")
-        return redirect("/jobs")
-
     jobs = Job.query.all()
 
-    return render_template("jobs.html", jobs=jobs)
+    return render_template(
+        "jobs.html",
+        jobs=jobs
+    )
 
 @app.route("/edit-department/<int:id>", methods=["POST"])
 @login_required

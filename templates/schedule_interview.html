@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Schedule Interview</h2>
+
+<form method="POST">
+
+<label>Date</label>
+
+<input
+type="date"
+name="interview_date"
+class="form-control">
+
+<br>
+
+<label>Time</label>
+
+<input
+type="time"
+name="interview_time"
+class="form-control">
+
+<br>
+
+<label>Interviewer</label>
+
+<input
+type="text"
+name="interviewer"
+class="form-control">
+
+<br>
+
+<label>Venue</label>
+
+<textarea
+name="venue"
+class="form-control"></textarea>
+
+<br>
+
+<button
+class="btn btn-success">
+
+Schedule Interview
+
+</button>
+
+</form>
+
+{% endblock %}

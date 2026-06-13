@@ -44,7 +44,7 @@ app.config[
     "SQLALCHEMY_TRACK_MODIFICATIONS"
 ] = False
 
-app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["UPLOAD_FOLDER"] = "static/uploads"
 
 # Mail Settings
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
@@ -195,6 +195,8 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
+
+
 class CompanySettings(db.Model):
 
     id = db.Column(
@@ -206,22 +208,41 @@ class CompanySettings(db.Model):
         db.String(255)
     )
 
+    company_email = db.Column(
+        db.String(255)
+    )
+
+    phone_number = db.Column(
+        db.String(50)
+    )
+
     address = db.Column(
         db.Text
     )
 
-    phone = db.Column(
-        db.String(100)
-    )
-
-    email = db.Column(
-        db.String(150)
-    )
-
     logo = db.Column(
         db.String(255)
-  )
+    )
 
+    theme = db.Column(
+        db.String(20),
+        default="light"
+    )
+
+    late_time = db.Column(
+        db.String(20),
+        default="08:00"
+    )
+
+    employee_prefix = db.Column(
+        db.String(20),
+        default="AVKV"
+    )
+
+    recruitment_open = db.Column(
+        db.Boolean,
+        default=True
+    )
 class AuditLog(db.Model):
 
     id = db.Column(
@@ -746,7 +767,134 @@ def admin_settings():
         "admin_settings.html",
         settings=settings
     )
-  
+
+@app.route(
+    "/settings",
+    methods=["GET", "POST"]
+)
+@login_required
+def settings():
+
+    if current_user.role != "admin":
+
+        flash("Access Denied")
+
+        return redirect("/")
+
+    settings = CompanySettings.query.first()
+
+    if not settings:
+
+        settings = CompanySettings(
+
+            company_name=
+            "AV KING VET DRUG VENTURE",
+
+            phone_number=
+            "08087981439",
+
+            address=
+            "NO 11 HALLELUJAH SHOPPING COMPLEX OPPOSITE POULTRY ASSOCIATION IYANA AJIA EGBEDA IBADAN"
+        )
+
+        db.session.add(settings)
+
+        db.session.commit()
+
+    if request.method == "POST":
+
+        settings.company_name = \
+        request.form["company_name"]
+
+        settings.company_email = \
+        request.form["company_email"]
+
+        settings.phone_number = \
+        request.form["phone_number"]
+
+        settings.address = \
+        request.form["address"]
+
+        settings.theme = \
+        request.form["theme"]
+
+        settings.employee_prefix = \
+        request.form["employee_prefix"]
+
+        settings.late_time = \
+        request.form["late_time"]
+
+        settings.recruitment_open = \
+        "recruitment_open" in request.form
+
+        logo = request.files.get(
+            "logo"
+        )
+
+        if logo:
+
+            filename = secure_filename(
+                logo.filename
+            )
+
+            logo.save(
+                os.path.join(
+                    app.config[
+                        "UPLOAD_FOLDER"
+                    ],
+                    filename
+                )
+            )
+
+            settings.logo = filename
+
+        db.session.commit()
+
+        flash(
+            "Settings Updated"
+        )
+
+        return redirect(
+            "/settings"
+        )
+
+    return render_template(
+        "settings.html",
+        settings=settings
+    )
+
+@app.route(
+    "/change-password",
+    methods=["GET", "POST"]
+)
+@login_required
+def change_password():
+
+    if request.method == "POST":
+
+        new_password = \
+        request.form[
+            "new_password"
+        ]
+
+        current_user.password = \
+        generate_password_hash(
+            new_password
+        )
+
+        db.session.commit()
+
+        flash(
+            "Password Updated"
+        )
+
+        return redirect(
+            "/dashboard"
+        )
+
+    return render_template(
+        "change_password.html"
+    )
 @app.route(
     "/upload-logo",
     methods=["POST"]

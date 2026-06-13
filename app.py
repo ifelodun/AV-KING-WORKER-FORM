@@ -945,6 +945,35 @@ def upload_logo():
         "/admin/settings"
 )
 
+@app.route("/add-worker", methods=["GET", "POST"])
+@login_required
+def add_worker():
+
+    if current_user.role not in ["admin", "super_admin"]:
+        flash("Access Denied")
+        return redirect("/")
+
+    if request.method == "POST":
+
+        worker = User(
+            fullname=request.form["fullname"],
+            email=request.form["email"],
+            username=request.form["email"],
+            password=generate_password_hash(request.form["password"]),
+            role="worker",
+            employee_id="AVKV" + str(uuid.uuid4())[:6]
+        )
+
+        db.session.add(worker)
+        db.session.commit()
+
+        flash("Worker created successfully")
+
+        return redirect("/workers")
+
+    return render_template("add_worker.html")
+
+    
 @app.route(
     "/profile",
     methods=["GET"]

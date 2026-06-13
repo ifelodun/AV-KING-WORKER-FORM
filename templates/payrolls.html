@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Payroll Records</h2>
+
+<table class="table">
+
+<tr>
+
+<th>Name</th>
+
+<th>Month</th>
+
+<th>Salary</th>
+
+</tr>
+
+{% for p in payrolls %}
+
+<tr>
+
+<td>{{p.fullname}}</td>
+
+<td>{{p.month}}</td>
+
+<td>₦{{p.net_salary}}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

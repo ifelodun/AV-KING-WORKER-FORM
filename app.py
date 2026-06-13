@@ -1003,6 +1003,48 @@ def change_username():
     return redirect(
         "/profile"
     )
+
+@app.route(
+    "/admin-login",
+    methods=["GET","POST"]
+)
+def admin_login():
+
+    if request.method == "POST":
+
+        username = request.form[
+            "username"
+        ]
+
+        password = request.form[
+            "password"
+        ]
+
+        user = User.query.filter_by(
+            username=username,
+            role="admin"
+        ).first()
+
+        if user and check_password_hash(
+            user.password,
+            password
+        ):
+
+            login_user(user)
+
+            return redirect(
+                "/dashboard"
+            )
+
+        flash(
+            "Invalid Login"
+        )
+
+    return render_template(
+        "admin_login.html"
+    )
+
+
 @app.route(
     "/change-password",
     methods=["POST"]

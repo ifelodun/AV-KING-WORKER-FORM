@@ -4,25 +4,56 @@
 
 <h2>Company Announcements</h2>
 
+{% if current_user.role in ["admin", "super_admin"] %}
+
+<a href="/create-announcement"
+class="btn btn-success mb-3">
+
+    New Announcement
+
+</a>
+
+{% endif %}
+
 {% for announcement in announcements %}
 
 <div class="card mb-3">
 
-<div class="card-body">
+    <div class="card-body">
 
-<h4>
-{{announcement.title}}
-</h4>
+        <h4>
+            {{ announcement.title }}
+        </h4>
 
-<p>
-{{announcement.message}}
-</p>
+        <p>
+            {{ announcement.message }}
+        </p>
 
-<small>
-{{announcement.created_at}}
-</small>
+        <small>
+            {{ announcement.created_by }}
+        </small>
 
-</div>
+        <br><br>
+
+        {% if current_user.role in ["admin", "super_admin"] %}
+
+        <a href="/edit-announcement/{{ announcement.id }}"
+        class="btn btn-warning btn-sm">
+
+            Edit
+
+        </a>
+
+        <a href="/delete-announcement/{{ announcement.id }}"
+        class="btn btn-danger btn-sm">
+
+            Delete
+
+        </a>
+
+        {% endif %}
+
+    </div>
 
 </div>
 

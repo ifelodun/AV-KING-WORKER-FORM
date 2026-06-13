@@ -1447,63 +1447,49 @@ def applications():
 @login_required
 def schedule_interview(id):
 
-    application = \
-    Application.query.get_or_404(
-        id
-    )
+    application = Application.query.get_or_404(id)
 
     if request.method == "POST":
 
         interview = Interview(
-
-            application_id=
-            application.id,
-
-            interview_date=
-            datetime.strptime(
-                request.form[
-                    "interview_date"
-                ],
-                "%Y-%m-%d"
-            ),
-
-            interview_time=
-            request.form[
-                "interview_time"
-            ],
-
-            interviewer=
-            request.form[
-                "interviewer"
-            ],
-
-            venue=
-            request.form[
-                "venue"
-            ]
+            application_id=application.id,
+            interview_date=request.form["interview_date"],
+            interview_time=request.form["interview_time"],
+            interviewer=request.form["interviewer"],
+            venue=request.form["venue"]
         )
 
-        application.status = \
-        "interview_scheduled"
+        application.status = "interview_scheduled"
 
-        db.session.add(
-            interview
-        )
-
+        db.session.add(interview)
         db.session.commit()
 
-        flash(
-            "Interview Scheduled"
+        send_email(
+            application.email,
+            "Interview Invitation",
+            f"""
+Dear {application.fullname},
+
+You have been invited for an interview.
+
+Date: {interview.interview_date}
+
+Time: {interview.interview_time}
+
+Venue: {interview.venue}
+
+AV KING VET DRUG VENTURE
+"""
         )
 
-        return redirect(
-            "/applications"
-        )
+        flash("Interview Scheduled Successfully")
+
+        return redirect("/applications")
 
     return render_template(
         "schedule_interview.html",
         application=application
-      )
+    )
 
 @app.route("/interviews")
 @login_required
@@ -2548,74 +2534,6 @@ def send_email(
     except Exception as e:
 
         print(e)
-
-@app.route(
-    "/schedule-interview/<int:id>",
-    methods=["GET", "POST"]
-)
-@login_required
-def schedule_interview(id):
-
-    application = Application.query.get_or_404(id)
-
-    if request.method == "POST":
-
-        interview = Interview(
-
-            application_id=application.id,
-
-            interview_date=request.form[
-                "interview_date"
-            ],
-
-            interview_time=request.form[
-                "interview_time"
-            ],
-
-            interviewer=request.form[
-                "interviewer"
-            ],
-
-            venue=request.form[
-                "venue"
-            ]
-        )
-
-        db.session.add(interview)
-        db.session.commit()
-
-        send_email(
-
-            application.email,
-
-            "Interview Invitation",
-
-            f"""
-Dear {application.fullname},
-
-You have been invited for an interview.
-
-Date:
-{interview.interview_date}
-
-Time:
-{interview.interview_time}
-
-Venue:
-{interview.venue}
-
-AV KING VET DRUG VENTURE
-"""
-        )
-
-        flash("Interview Scheduled")
-
-        return redirect("/interviews")
-
-    return render_template(
-        "schedule_interview.html",
-        application=application
-    )
 
 
 

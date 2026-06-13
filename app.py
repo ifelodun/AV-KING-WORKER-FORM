@@ -34,9 +34,11 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "AVKING_SECRET_KEY"
 
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "mysql+pymysql://avking_user:StrongPassword123@localhost/avking_hrms"
+import os
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL"
+)
 
 app.config[
     "SQLALCHEMY_TRACK_MODIFICATIONS"

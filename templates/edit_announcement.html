@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Edit Announcement</h2>
+
+<form method="POST">
+
+    <input type="text"
+           name="title"
+           class="form-control mb-2"
+           value="{{ announcement.title }}"
+           required>
+
+    <textarea name="message"
+              class="form-control mb-2"
+              rows="6"
+              required>{{ announcement.message }}</textarea>
+
+    <button class="btn btn-primary">
+        Update
+    </button>
+
+</form>
+
+{% endblock %}

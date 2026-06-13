@@ -2,50 +2,57 @@
 
 {% block content %}
 
-<h2>Create Worker Account</h2>
+<div class="container mt-4">
 
-<form method="POST">
+    <h2>Worker Registration</h2>
 
-<label>
-Application Number
-</label>
+    <p class="text-muted">
+        Enter your approved application number to create your worker account.
+    </p>
 
-<input
-type="text"
-name="application_number"
-class="form-control">
+    <div class="card mt-3">
+        <div class="card-body">
 
-<br>
+            <form method="POST" action="/worker-register">
 
-<label>
-Username
-</label>
+                <!-- APPLICATION NUMBER -->
+                <label>Application Number</label>
+                <input type="text"
+                       name="application_number"
+                       class="form-control mb-2"
+                       placeholder="Enter your application number"
+                       required>
 
-<input
-type="text"
-name="username"
-class="form-control">
+                <!-- USERNAME -->
+                <label>Username</label>
+                <input type="text"
+                       name="username"
+                       class="form-control mb-2"
+                       required>
 
-<br>
+                <!-- PASSWORD -->
+                <label>Password</label>
+                <input type="password"
+                       name="password"
+                       class="form-control mb-2"
+                       required>
 
-<label>
-Password
-</label>
+                <!-- CONFIRM PASSWORD (optional frontend check) -->
+                <label>Confirm Password</label>
+                <input type="password"
+                       name="confirm_password"
+                       class="form-control mb-3"
+                       required>
 
-<input
-type="password"
-name="password"
-class="form-control">
+                <button type="submit" class="btn btn-success w-100">
+                    Create Worker Account
+                </button>
 
-<br>
+            </form>
 
-<button
-class="btn btn-success">
+        </div>
+    </div>
 
-Create Account
-
-</button>
-
-</form>
+</div>
 
 {% endblock %}

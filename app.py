@@ -1020,9 +1020,11 @@ def admin_login():
             "password"
         ]
 
-        user = User.query.filter_by(
-            username=username,
-            role="admin"
+        user = User.query.filter(
+            User.username == username,
+            User.role.in_(
+                ["admin", "super_admin"]
+            )
         ).first()
 
         if user and check_password_hash(

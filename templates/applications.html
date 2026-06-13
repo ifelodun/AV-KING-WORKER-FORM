@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Job Applications</h2>
+
+<table class="table table-striped">
+
+<tr>
+
+<th>Application No</th>
+<th>Name</th>
+<th>Email</th>
+<th>Position</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+{% for application in applications %}
+
+<tr>
+
+<td>
+{{application.application_number}}
+</td>
+
+<td>
+{{application.fullname}}
+</td>
+
+<td>
+{{application.email}}
+</td>
+
+<td>
+{{application.position}}
+</td>
+
+<td>
+{{application.status}}
+</td>
+
+<td>
+
+<a
+href="/schedule-interview/{{application.id}}"
+class="btn btn-primary btn-sm">
+
+Interview
+
+</a>
+
+<a
+href="/approve-application/{{application.id}}"
+class="btn btn-success btn-sm">
+
+Approve
+
+</a>
+
+<a
+href="/reject-application/{{application.id}}"
+class="btn btn-danger btn-sm">
+
+Reject
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

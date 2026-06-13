@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>My Profile</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <p><b>Full Name:</b> {{ user.fullname }}</p>
+
+            <p><b>Username:</b> {{ user.username }}</p>
+
+            <p><b>Email:</b> {{ user.email }}</p>
+
+            <p><b>Role:</b> {{ user.role }}</p>
+
+            <p><b>Employee ID:</b> {{ user.employee_id }}</p>
+
+        </div>
+    </div>
+
+    <!-- UPDATE FORM -->
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <h4>Update Profile</h4>
+
+            <form method="POST" action="/update-profile">
+
+                <input type="text"
+                       name="username"
+                       class="form-control mb-2"
+                       value="{{ user.username }}"
+                       required>
+
+                <input type="email"
+                       name="email"
+                       class="form-control mb-2"
+                       value="{{ user.email }}"
+                       required>
+
+                <button class="btn btn-primary">
+                    Update Profile
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

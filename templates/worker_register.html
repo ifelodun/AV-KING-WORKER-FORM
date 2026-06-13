@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create Worker Account</h2>
+
+<form method="POST">
+
+<label>
+Application Number
+</label>
+
+<input
+type="text"
+name="application_number"
+class="form-control">
+
+<br>
+
+<label>
+Username
+</label>
+
+<input
+type="text"
+name="username"
+class="form-control">
+
+<br>
+
+<label>
+Password
+</label>
+
+<input
+type="password"
+name="password"
+class="form-control">
+
+<br>
+
+<button
+class="btn btn-success">
+
+Create Account
+
+</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="text-center">
+
+<h1>
+AV KING VET DRUG VENTURE
+</h1>
+
+<p>
+
+NO 11, HALLELUJAH SHOPPING COMPLEX,
+OPPOSITE POULTRY ASSOCIATION,
+IYANA AJIA,
+EGBEDA,
+IBADAN
+
+</p>
+
+<p>
+
+Phone:
+08087981439
+
+</p>
+
+<a
+href="/careers"
+class="btn btn-success">
+
+Apply For Job
+
+</a>
+
+</div>
+
+<hr>
+
+{% if page %}
+
+<h2>
+{{page.title}}
+</h2>
+
+<p>
+{{page.content}}
+</p>
+
+{% endif %}
+
+{% endblock %}

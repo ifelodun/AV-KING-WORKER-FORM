@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>
+
+Apply For
+
+{{job.title}}
+
+</h2>
+
+<form method="POST">
+
+<input
+class="form-control mb-3"
+name="fullname"
+placeholder="Full Name">
+
+<input
+class="form-control mb-3"
+name="email"
+placeholder="Email">
+
+<input
+class="form-control mb-3"
+name="phone"
+placeholder="Phone">
+
+<button
+class="btn btn-success">
+
+Submit Application
+
+</button>
+
+</form>
+
+{% endblock %}

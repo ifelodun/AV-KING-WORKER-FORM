@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Current Vacancies</h2>
+
+{% for job in jobs %}
+
+<div class="card mb-3">
+
+<div class="card-body">
+
+<h4>
+{{job.title}}
+</h4>
+
+<p>
+{{job.department}}
+</p>
+
+<a
+class="btn btn-primary"
+href="/apply/{{job.id}}">
+
+Apply
+
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

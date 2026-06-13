@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Interview Calendar</h2>
+
+<table class="table table-bordered">
+
+<tr>
+
+<th>Date</th>
+<th>Time</th>
+<th>Interviewer</th>
+<th>Venue</th>
+
+</tr>
+
+{% for interview in interviews %}
+
+<tr>
+
+<td>{{interview.interview_date}}</td>
+
+<td>{{interview.interview_time}}</td>
+
+<td>{{interview.interviewer}}</td>
+
+<td>{{interview.venue}}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

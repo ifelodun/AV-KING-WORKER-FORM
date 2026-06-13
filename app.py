@@ -863,38 +863,7 @@ def settings():
         settings=settings
     )
 
-@app.route(
-    "/change-password",
-    methods=["GET", "POST"]
-)
-@login_required
-def change_password():
 
-    if request.method == "POST":
-
-        new_password = \
-        request.form[
-            "new_password"
-        ]
-
-        current_user.password = \
-        generate_password_hash(
-            new_password
-        )
-
-        db.session.commit()
-
-        flash(
-            "Password Updated"
-        )
-
-        return redirect(
-            "/dashboard"
-        )
-
-    return render_template(
-        "change_password.html"
-    )
 @app.route(
     "/upload-logo",
     methods=["POST"]

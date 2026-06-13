@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Website Content Management</h2>
+
+<form method="POST">
+
+<label>Page Title</label>
+
+<input
+type="text"
+name="title"
+value="{{content.title}}"
+class="form-control">
+
+<br>
+
+<label>Content</label>
+
+<textarea
+name="content"
+rows="10"
+class="form-control">
+
+{{content.content}}
+
+</textarea>
+
+<br>
+
+<button
+class="btn btn-primary">
+
+Save Changes
+
+</button>
+
+</form>
+
+{% endblock %}

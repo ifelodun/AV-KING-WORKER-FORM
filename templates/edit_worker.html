@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Edit Worker</h2>
+
+<form method="POST">
+
+<label>Full Name</label>
+
+<input
+type="text"
+name="fullname"
+class="form-control"
+value="{{worker.fullname}}">
+
+<br>
+
+<label>Username</label>
+
+<input
+type="text"
+name="username"
+class="form-control"
+value="{{worker.username}}">
+
+<br>
+
+<label>Department</label>
+
+<input
+type="text"
+name="department"
+class="form-control"
+value="{{worker.department}}">
+
+<br>
+
+<label>Status</label>
+
+<select
+name="status"
+class="form-control">
+
+<option value="active">
+Active
+</option>
+
+<option value="disabled">
+Disabled
+</option>
+
+</select>
+
+<br>
+
+<button
+class="btn btn-primary">
+
+Update Worker
+
+</button>
+
+</form>
+
+{% endblock %}

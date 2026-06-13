@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Workers Management</h2>
+
+<a href="/create-worker"
+class="btn btn-success mb-3">
+
+Add Worker
+
+</a>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Employee ID</th>
+<th>Name</th>
+<th>Department</th>
+<th>Username</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for worker in workers %}
+
+<tr>
+
+<td>{{worker.employee_id}}</td>
+
+<td>{{worker.fullname}}</td>
+
+<td>{{worker.department}}</td>
+
+<td>{{worker.username}}</td>
+
+<td>{{worker.status}}</td>
+
+<td>
+
+<a href="/edit-worker/{{worker.id}}"
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>About Us</h2>
+
+{% if page %}
+
+<h3>
+{{page.title}}
+</h3>
+
+<p>
+{{page.content}}
+</p>
+
+{% else %}
+
+<p>
+
+AV KING VET DRUG VENTURE
+specializes in veterinary
+drugs and animal healthcare
+solutions.
+
+</p>
+
+{% endif %}
+
+{% endblock %}

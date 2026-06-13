@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Leave Requests</h2>
+
+<table class="table table-striped">
+
+    <tr>
+        <th>Worker</th>
+        <th>Reason</th>
+        <th>Status</th>
+    </tr>
+
+    {% for request in requests %}
+
+    <tr>
+        <td>{{ request.user.fullname }}</td>
+        <td>{{ request.reason }}</td>
+        <td>{{ request.status }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

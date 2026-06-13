@@ -2,51 +2,49 @@
 
 {% block content %}
 
-<div class="text-center">
+<div class="text-center mt-5">
 
-<h1>
-AV KING VET DRUG VENTURE
-</h1>
+    <h1>
+        AV KING WORKER FORM
+    </h1>
 
-<p>
+    <h5>
+        AV KING VET DRUG VENTURE
+    </h5>
 
-NO 11, HALLELUJAH SHOPPING COMPLEX,
-OPPOSITE POULTRY ASSOCIATION,
-IYANA AJIA,
-EGBEDA,
-IBADAN
+    <p>
+        NO 11, HALLELUJAH SHOPPING COMPLEX,
+        OPPOSITE POULTRY ASSOCIATION,
+        IYANA AJIA,
+        EGBEDA,
+        IBADAN
+    </p>
 
-</p>
+    <p>
+        Phone: 08087981439
+    </p>
 
-<p>
+    <hr>
 
-Phone:
-08087981439
+    <div class="mt-4">
 
-</p>
+        <a href="/login"
+           class="btn btn-primary btn-lg">
+            Worker Login
+        </a>
 
-<a
-href="/careers"
-class="btn btn-success">
+        <a href="/admin-login"
+           class="btn btn-danger btn-lg">
+            Admin Login
+        </a>
 
-Apply For Job
+        <a href="/careers"
+           class="btn btn-success btn-lg">
+            Apply For Job
+        </a>
 
-</a>
+    </div>
 
 </div>
-
-<hr>
-
-{% if page %}
-
-<h2>
-{{page.title}}
-</h2>
-
-<p>
-{{page.content}}
-</p>
-
-{% endif %}
 
 {% endblock %}

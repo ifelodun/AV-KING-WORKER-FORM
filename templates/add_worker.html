@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Add Worker</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <form method="POST" action="/add-worker">
+
+                <!-- FULL NAME -->
+                <label>Full Name</label>
+                <input type="text"
+                       name="fullname"
+                       class="form-control mb-2"
+                       required>
+
+                <!-- EMAIL -->
+                <label>Email</label>
+                <input type="email"
+                       name="email"
+                       class="form-control mb-2"
+                       required>
+
+                <!-- PHONE -->
+                <label>Phone Number</label>
+                <input type="text"
+                       name="phone"
+                       class="form-control mb-2">
+
+                <!-- DEPARTMENT -->
+                <label>Department</label>
+                <input type="text"
+                       name="department"
+                       class="form-control mb-2">
+
+                <!-- PASSWORD -->
+                <label>Password</label>
+                <input type="password"
+                       name="password"
+                       class="form-control mb-2"
+                       required>
+
+                <!-- ROLE (fixed worker) -->
+                <input type="hidden"
+                       name="role"
+                       value="worker">
+
+                <!-- SUBMIT -->
+                <button class="btn btn-success">
+                    Create Worker
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

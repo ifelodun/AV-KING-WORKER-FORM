@@ -1359,6 +1359,34 @@ class Job(db.Model):
         default=nigeria_time
   )
 
+@app.route("/delete-job/<int:id>")
+@login_required
+def delete_job(id):
+
+    job = Job.query.get_or_404(id)
+
+    db.session.delete(job)
+    db.session.commit()
+
+    flash("Job deleted")
+
+    return redirect("/jobs")
+
+@app.route("/edit-job/<int:id>", methods=["POST"])
+@login_required
+def edit_job(id):
+
+    job = Job.query.get_or_404(id)
+
+    job.title = request.form["title"]
+    job.description = request.form["description"]
+
+    db.session.commit()
+
+    flash("Job updated")
+
+    return redirect("/jobs")
+
 class Application(db.Model):
 
     id = db.Column(
@@ -1534,16 +1562,32 @@ def create_job():
         "create_job.html"
     )
 
-@app.route("/jobs")
+@app.route("/jobs", methods=["GET", "POST"])
 @login_required
 def jobs():
 
+    if current_user.role != "admin":
+        flash("Access denied")
+        return redirect("/")
+
+    if request.method == "POST":
+
+        new_job = Job(
+            title=request.form["title"],
+            description=request.form["description"]
+        )
+
+        db.session.add(new_job)
+        db.session.commit()
+
+        flash("Job added successfully")
+        return redirect("/jobs")
+
     jobs = Job.query.all()
 
-    return render_template(
-        "jobs.html",
-        jobs=jobs
-  )
+    return render_template("jobs.html", jobs=jobs)
+
+
 
 @app.route(
     "/apply/<int:job_id>",

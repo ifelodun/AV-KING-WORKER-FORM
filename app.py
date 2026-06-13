@@ -1587,8 +1587,37 @@ def jobs():
 
     return render_template("jobs.html", jobs=jobs)
 
+@app.route("/edit-department/<int:id>", methods=["POST"])
+@login_required
+def edit_department(id):
 
+    dept = Department.query.get_or_404(id)
 
+    dept.name = request.form["name"]
+    dept.description = request.form["description"]
+
+    db.session.commit()
+
+    flash("Department updated")
+
+    return redirect("/departments")
+
+@app.route("/add-department", methods=["POST"])
+@login_required
+def add_department():
+
+    dept = Department(
+        name=request.form["name"],
+        description=request.form["description"]
+    )
+
+    db.session.add(dept)
+    db.session.commit()
+
+    flash("Department added")
+
+    return redirect("/departments")
+    
 @app.route(
     "/apply/<int:job_id>",
     methods=["GET", "POST"]

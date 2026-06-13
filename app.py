@@ -2114,24 +2114,7 @@ class Notification(db.Model):
         default=nigeria_time
     )
 
-class WebsiteContent(db.Model):
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
-
-    page = db.Column(
-        db.String(50)
-    )
-
-    title = db.Column(
-        db.String(255)
-    )
-
-    content = db.Column(
-        db.Text
-    )
 
 @app.route(
     "/upload-profile-photo",
@@ -2840,12 +2823,48 @@ def strong_password(password):
         password,
         re.VERBOSE
     )
+
+class WebsiteContent(db.Model):
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    page = db.Column(
+        db.String(50)
+    )
+
+    title = db.Column(
+        db.String(255)
+    )
+
+    content = db.Column(
+        db.Text
+    )
+
+with app.app_context():
+
+    db.create_all()
+
+    if not WebsiteContent.query.filter_by(
+        page="home"
+    ).first():
+
+        home_page = WebsiteContent(
+            page="home",
+            title="Welcome",
+            content="Welcome to AV KING WORKER FORM"
+        )
+
+        db.session.add(home_page)
+        db.session.commit()
+
 if __name__ == "__main__":
 
     app.run(
         host="0.0.0.0",
         port=5000,
         debug=True
-  )
-
+    )
   

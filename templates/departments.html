@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Departments</h2>
+
+    <!-- ADD DEPARTMENT -->
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <h4>Add Department</h4>
+
+            <form method="POST" action="/add-department">
+
+                <input type="text"
+                       name="name"
+                       class="form-control mb-2"
+                       placeholder="Department Name"
+                       required>
+
+                <textarea name="description"
+                          class="form-control mb-2"
+                          placeholder="Department Description"></textarea>
+
+                <button class="btn btn-success">
+                    Add Department
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- LIST DEPARTMENTS -->
+    <div class="mt-4">
+
+        <h4>All Departments</h4>
+
+        {% for dept in departments %}
+
+        <div class="card mt-2">
+            <div class="card-body">
+
+                <form method="POST" action="/edit-department/{{ dept.id }}">
+
+                    <input type="text"
+                           name="name"
+                           value="{{ dept.name }}"
+                           class="form-control mb-2">
+
+                    <textarea name="description"
+                              class="form-control mb-2">{{ dept.description }}</textarea>
+
+                    <button class="btn btn-primary btn-sm">
+                        Update
+                    </button>
+
+                    <a href="/delete-department/{{ dept.id }}"
+                       class="btn btn-danger btn-sm">
+                        Delete
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

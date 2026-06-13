@@ -2147,6 +2147,59 @@ def clock_out():
         "/worker-dashboard"
     )
 
+@app.route(
+    "/edit-announcement/<int:id>",
+    methods=["GET", "POST"]
+)
+@login_required
+def edit_announcement(id):
+
+    announcement = Announcement.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        announcement.title = request.form["title"]
+
+        announcement.message = request.form["message"]
+
+        db.session.commit()
+
+        flash(
+            "Announcement Updated"
+        )
+
+        return redirect(
+            "/announcements"
+        )
+
+    return render_template(
+        "edit_announcement.html",
+        announcement=announcement
+    )
+
+@app.route(
+    "/delete-announcement/<int:id>"
+)
+@login_required
+def delete_announcement(id):
+
+    announcement = Announcement.query.get_or_404(id)
+
+    db.session.delete(
+        announcement
+    )
+
+    db.session.commit()
+
+    flash(
+        "Announcement Deleted"
+    )
+
+    return redirect(
+        "/announcements"
+    )
+
+
 @app.route("/attendance-history")
 @login_required
 def attendance_history():

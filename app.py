@@ -35,10 +35,17 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "AVKING_SECRET_KEY"
 
 import os
+import os
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL"
-)
+database_url = os.getenv("DATABASE_URL")
+
+if database_url:
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = \
+    "sqlite:///avking.db"
+    
+
 
 app.config[
     "SQLALCHEMY_TRACK_MODIFICATIONS"
@@ -959,25 +966,43 @@ def change_username():
 
     username = request.form[
         "username"
-    ]
+    ].strip()
 
-    current_user.username = username
+    existing_user = User.query.filter_by(
+        username=username
+    ).first()
+
+    if existing_user and \
+       existing_user.id != current_user.id:
+
+        flash(
+            "Username already exists"
+        )
+
+        return redirect(
+            "/profile"
+        )
+
+    old_username = \
+    current_user.username
+
+    current_user.username = \
+    username
 
     db.session.commit()
 
     log_action(
-        current_user.username,
-        "Changed Username"
+        old_username,
+        f"Changed username to {username}"
     )
 
     flash(
-        "Username Updated"
+        "Username Updated Successfully"
     )
 
     return redirect(
         "/profile"
     )
-
 @app.route(
     "/change-password",
     methods=["POST"]

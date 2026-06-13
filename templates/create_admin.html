@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Create Admin (Super Admin Only)</h2>
+
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <form method="POST">
+
+                <input type="text" name="employee_id"
+                       class="form-control mb-2"
+                       placeholder="Employee ID" required>
+
+                <input type="text" name="fullname"
+                       class="form-control mb-2"
+                       placeholder="Full Name" required>
+
+                <input type="text" name="username"
+                       class="form-control mb-2"
+                       placeholder="Username" required>
+
+                <input type="email" name="email"
+                       class="form-control mb-2"
+                       placeholder="Email" required>
+
+                <input type="password" name="password"
+                       class="form-control mb-2"
+                       placeholder="Password" required>
+
+                <button class="btn btn-primary">
+                    Create Admin
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

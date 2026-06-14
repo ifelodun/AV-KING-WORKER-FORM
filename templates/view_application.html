@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>
+                Application Details
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <p><strong>Application Number:</strong> {{ application.application_number }}</p>
+
+            <p><strong>Full Name:</strong> {{ application.fullname }}</p>
+
+            <p><strong>Email:</strong> {{ application.email }}</p>
+
+            <p><strong>Phone:</strong> {{ application.phone }}</p>
+
+            <p><strong>Gender:</strong> {{ application.gender }}</p>
+
+            <p><strong>Address:</strong> {{ application.address }}</p>
+
+            <p><strong>State Of Origin:</strong> {{ application.state_of_origin }}</p>
+
+            <p><strong>Next Of Kin:</strong> {{ application.next_of_kin }}</p>
+
+            <p><strong>Next Of Kin Phone:</strong> {{ application.next_of_kin_phone }}</p>
+
+            <hr>
+
+            <a href="{{ url_for('static', filename='uploads/' + application.passport) }}"
+               target="_blank"
+               class="btn btn-primary">
+
+                View Passport
+
+            </a>
+
+            <a href="{{ url_for('static', filename='uploads/' + application.cv) }}"
+               target="_blank"
+               class="btn btn-success">
+
+                View CV
+
+            </a>
+
+            {% if application.other_document %}
+
+            <a href="{{ url_for('static', filename='uploads/' + application.other_document) }}"
+               target="_blank"
+               class="btn btn-info">
+
+                Other Document
+
+            </a>
+
+            {% endif %}
+
+            <a href="/applications"
+               class="btn btn-secondary">
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

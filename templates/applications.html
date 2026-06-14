@@ -2,77 +2,138 @@
 
 {% block content %}
 
-<h2>Job Applications</h2>
+<div class="container-fluid mt-4">
 
-<table class="table table-striped">
+    <h2>
+        Job Applications
+    </h2>
 
-<tr>
+    <div class="card shadow">
 
-<th>Application No</th>
-<th>Name</th>
-<th>Email</th>
-<th>Position</th>
-<th>Status</th>
-<th>Action</th>
+        <div class="card-body">
 
-</tr>
+            <div class="table-responsive">
 
-{% for application in applications %}
+                <table class="table table-bordered table-hover">
 
-<tr>
+                    <thead class="table-dark">
 
-<td>
-{{application.application_number}}
-</td>
+                        <tr>
 
-<td>
-{{application.fullname}}
-</td>
+                            <th>App No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
 
-<td>
-{{application.email}}
-</td>
+                        </tr>
 
-<td>
-{{application.position}}
-</td>
+                    </thead>
 
-<td>
-{{application.status}}
-</td>
+                    <tbody>
 
-<td>
+                    {% for app in applications %}
 
-<a
-href="/schedule-interview/{{application.id}}"
-class="btn btn-primary btn-sm">
+                        <tr>
 
-Interview
+                            <td>
+                                {{ app.application_number }}
+                            </td>
 
-</a>
+                            <td>
+                                {{ app.fullname }}
+                            </td>
 
-<a
-href="/approve-application/{{application.id}}"
-class="btn btn-success btn-sm">
+                            <td>
+                                {{ app.email }}
+                            </td>
 
-Approve
+                            <td>
+                                {{ app.phone }}
+                            </td>
 
-</a>
+                            <td>
 
-<a
-href="/reject-application/{{application.id}}"
-class="btn btn-danger btn-sm">
+                                {% if app.status == "approved" %}
 
-Reject
+                                <span class="badge bg-success">
+                                    Approved
+                                </span>
 
-</a>
+                                {% elif app.status == "rejected" %}
 
-</td>
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
 
-</tr>
+                                {% elif app.status == "interview_scheduled" %}
 
-{% endfor %}
+                                <span class="badge bg-warning">
+                                    Interview Scheduled
+                                </span>
 
-</table>
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+                                    Pending
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ app.created_at.strftime('%d-%m-%Y') }}
+                            </td>
+
+                            <td>
+
+                                <a href="/view-application/{{ app.id }}"
+                                   class="btn btn-info btn-sm">
+
+                                    View
+
+                                </a>
+
+                                <a href="/approve-application/{{ app.id }}"
+                                   class="btn btn-success btn-sm">
+
+                                    Approve
+
+                                </a>
+
+                                <a href="/reject-application/{{ app.id }}"
+                                   class="btn btn-danger btn-sm">
+
+                                    Reject
+
+                                </a>
+
+                                <a href="/schedule-interview/{{ app.id }}"
+                                   class="btn btn-warning btn-sm">
+
+                                    Interview
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

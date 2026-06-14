@@ -4,74 +4,95 @@
 
 <div class="container mt-4">
 
-    <h2>Jobs Management</h2>
+    <div class="d-flex justify-content-between align-items-center">
 
-    <!-- ADD JOB -->
-    <div class="card mt-3">
-        <div class="card-body">
+        <h2>Jobs Management</h2>
 
-            <h4>Add Job</h4>
+        {% if current_user.role in ["admin", "super_admin"] %}
+        <a href="/create-job" class="btn btn-success">
+            Create Job
+        </a>
+        {% endif %}
 
-            <form method="POST">
-
-                <input type="text"
-                       name="title"
-                       class="form-control mb-2"
-                       placeholder="Job Title"
-                       required>
-
-                <textarea name="description"
-                          class="form-control mb-2"
-                          placeholder="Job Description"
-                          required></textarea>
-
-                <button class="btn btn-success">
-                    Add Job
-                </button>
-
-            </form>
-
-        </div>
     </div>
 
-    <!-- JOB LIST -->
-    <div class="mt-4">
+    <hr>
 
-        <h4>All Jobs</h4>
+    {% if jobs %}
 
         {% for job in jobs %}
 
-        <div class="card mt-2">
+        <div class="card mb-3 shadow-sm">
+
             <div class="card-body">
 
-                <!-- EDIT FORM -->
-                <form method="POST" action="/edit-job/{{ job.id }}">
+                <h4>{{ job.title }}</h4>
 
-                    <input type="text"
-                           name="title"
-                           value="{{ job.title }}"
-                           class="form-control mb-2">
+                <p>
+                    <strong>Department:</strong>
+                    {{ job.department }}
+                </p>
 
-                    <textarea name="description"
-                              class="form-control mb-2">{{ job.description }}</textarea>
+                <p>
+                    <strong>Description:</strong>
+                    {{ job.description }}
+                </p>
 
-                    <button class="btn btn-primary btn-sm">
-                        Update
-                    </button>
+                <p>
+                    <strong>Requirements:</strong>
+                    {{ job.requirements }}
+                </p>
 
-                    <a href="/delete-job/{{ job.id }}"
-                       class="btn btn-danger btn-sm">
-                        Delete
-                    </a>
+                <p>
+                    <strong>Salary:</strong>
+                    {{ job.salary }}
+                </p>
 
-                </form>
+                <p>
+                    <strong>Location:</strong>
+                    {{ job.location }}
+                </p>
+
+                <p>
+                    <strong>Deadline:</strong>
+                    {{ job.deadline }}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ job.status }}
+                </p>
+
+                {% if current_user.role in ["admin", "super_admin"] %}
+
+                <a
+                    href="/edit-job/{{ job.id }}"
+                    class="btn btn-primary btn-sm">
+                    Edit
+                </a>
+
+                <a
+                    href="/delete-job/{{ job.id }}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Delete this job?')">
+                    Delete
+                </a>
+
+                {% endif %}
 
             </div>
+
         </div>
 
         {% endfor %}
 
-    </div>
+    {% else %}
+
+        <div class="alert alert-info">
+            No jobs available.
+        </div>
+
+    {% endif %}
 
 </div>
 

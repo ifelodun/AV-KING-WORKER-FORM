@@ -1571,8 +1571,12 @@ class Application(db.Model):
         db.String(100)
     )
 
-    position = db.Column(
+    next_of_kin = db.Column(
         db.String(255)
+    )
+
+    next_of_kin_phone = db.Column(
+        db.String(50)
     )
 
     passport = db.Column(
@@ -1583,16 +1587,24 @@ class Application(db.Model):
         db.String(255)
     )
 
+    other_document = db.Column(
+        db.String(255)
+    )
+
     status = db.Column(
         db.String(50),
         default="pending"
+    )
+
+    worker_created = db.Column(
+        db.Boolean,
+        default=False
     )
 
     created_at = db.Column(
         db.DateTime,
         default=nigeria_time
     )
-
 class Interview(db.Model):
 
     id = db.Column(
@@ -1630,19 +1642,7 @@ class Interview(db.Model):
         default=nigeria_time
     )
 
-def generate_application_number():
 
-    last = Application.query.order_by(
-        Application.id.desc()
-    ).first()
-
-    if not last:
-
-        return "APP001"
-
-    number = last.id + 1
-
-    return f"APP{str(number).zfill(3)}"
 
 @app.route("/careers")
 def careers():
@@ -1740,17 +1740,66 @@ def add_department():
 
     return redirect("/departments")
     
+from werkzeug.utils import secure_filename
+import os
+
 @app.route(
-    "/apply/<int:job_id>",
+    "/apply/<int:id>",
     methods=["GET", "POST"]
 )
-def apply(job_id):
+def apply(id):
 
-    job = Job.query.get_or_404(
-        job_id
-    )
+    job = Job.query.get_or_404(id)
 
     if request.method == "POST":
+
+        passport = request.files["passport"]
+
+        cv = request.files["cv"]
+
+        other_document = request.files.get(
+            "other_document"
+        )
+
+        passport_file = secure_filename(
+            passport.filename
+        )
+
+        cv_file = secure_filename(
+            cv.filename
+        )
+
+        passport.save(
+            os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                passport_file
+            )
+        )
+
+        cv.save(
+            os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                cv_file
+            )
+        )
+
+        other_file = ""
+
+        if (
+            other_document and
+            other_document.filename
+        ):
+
+            other_file = secure_filename(
+                other_document.filename
+            )
+
+            other_document.save(
+                os.path.join(
+                    app.config["UPLOAD_FOLDER"],
+                    other_file
+                )
+            )
 
         application = Application(
 
@@ -1777,12 +1826,25 @@ def apply(job_id):
                 "address"
             ],
 
-            state_of_origin=
-            request.form[
+            state_of_origin=request.form[
                 "state_of_origin"
             ],
 
-            position=job.title
+            next_of_kin=request.form[
+                "next_of_kin"
+            ],
+
+            next_of_kin_phone=request.form[
+                "next_of_kin_phone"
+            ],
+
+            passport=passport_file,
+
+            cv=cv_file,
+
+            other_document=other_file,
+
+            status="pending"
         )
 
         db.session.add(
@@ -1792,11 +1854,12 @@ def apply(job_id):
         db.session.commit()
 
         flash(
-            "Application Submitted"
+            "Application Submitted Successfully",
+            "success"
         )
 
         return redirect(
-            "/application-status"
+            "/careers"
         )
 
     return render_template(
@@ -1808,9 +1871,19 @@ def apply(job_id):
 @login_required
 def applications():
 
-    if not admin_required():
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
 
-        return redirect("/dashboard")
+        flash(
+            "Access Denied",
+            "danger"
+        )
+
+        return redirect(
+            "/dashboard"
+        )
 
     applications = Application.query.order_by(
         Application.id.desc()
@@ -1820,6 +1893,19 @@ def applications():
         "applications.html",
         applications=applications
     )
+
+def generate_application_number():
+
+    last = Application.query.order_by(
+        Application.id.desc()
+    ).first()
+
+    if not last:
+        return "APP001"
+
+    number = last.id + 1
+
+    return f"APP{str(number).zfill(3)}"
 
 @app.route(
     "/schedule-interview/<int:id>",

@@ -2,34 +2,63 @@
 
 {% block content %}
 
-<h2>Current Vacancies</h2>
+<div class="container mt-4">
 
-{% for job in jobs %}
+    <h2>Current Vacancies</h2>
 
-<div class="card mb-3">
+    {% if jobs %}
 
-<div class="card-body">
+        {% for job in jobs %}
 
-<h4>
-{{job.title}}
-</h4>
+        <div class="card mb-3">
 
-<p>
-{{job.department}}
-</p>
+            <div class="card-body">
 
-<a
-class="btn btn-primary"
-href="/apply/{{job.id}}">
+                <h4>{{ job.title }}</h4>
 
-Apply
+                <p>
+                    <strong>Department:</strong>
+                    {{ job.department }}
+                </p>
 
-</a>
+                <p>
+                    <strong>Location:</strong>
+                    {{ job.location }}
+                </p>
+
+                <p>
+                    <strong>Salary:</strong>
+                    {{ job.salary }}
+                </p>
+
+                <p>
+                    <strong>Deadline:</strong>
+                    {{ job.closing_date }}
+                </p>
+
+                <a href="/apply/{{ job.id }}"
+                   class="btn btn-success">
+
+                    Apply Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-warning">
+
+            No vacancies available.
+
+        </div>
+
+    {% endif %}
 
 </div>
-
-</div>
-
-{% endfor %}
 
 {% endblock %}

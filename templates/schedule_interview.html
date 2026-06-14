@@ -2,52 +2,142 @@
 
 {% block content %}
 
-<h2>Schedule Interview</h2>
+<div class="container mt-5">
 
-<form method="POST">
+    <div class="row justify-content-center">
 
-<label>Date</label>
+        <div class="col-md-8">
 
-<input
-type="date"
-name="interview_date"
-class="form-control">
+            <div class="card shadow">
 
-<br>
+                <div class="card-header bg-primary text-white">
 
-<label>Time</label>
+                    <h4 class="mb-0">
+                        Schedule Interview
+                    </h4>
 
-<input
-type="time"
-name="interview_time"
-class="form-control">
+                </div>
 
-<br>
+                <div class="card-body">
 
-<label>Interviewer</label>
+                    <div class="alert alert-info">
 
-<input
-type="text"
-name="interviewer"
-class="form-control">
+                        <h5>
+                            Applicant Information
+                        </h5>
 
-<br>
+                        <hr>
 
-<label>Venue</label>
+                        <p>
+                            <strong>Application No:</strong>
+                            {{ application.application_number }}
+                        </p>
 
-<textarea
-name="venue"
-class="form-control"></textarea>
+                        <p>
+                            <strong>Full Name:</strong>
+                            {{ application.fullname }}
+                        </p>
 
-<br>
+                        <p>
+                            <strong>Email:</strong>
+                            {{ application.email }}
+                        </p>
 
-<button
-class="btn btn-success">
+                        <p>
+                            <strong>Phone:</strong>
+                            {{ application.phone }}
+                        </p>
 
-Schedule Interview
+                    </div>
 
-</button>
+                    <form method="POST">
 
-</form>
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Interview Date
+                            </label>
+
+                            <input
+                                type="date"
+                                name="interview_date"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Interview Time
+                            </label>
+
+                            <input
+                                type="time"
+                                name="interview_time"
+                                class="form-control"
+                                required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Venue
+                            </label>
+
+                            <textarea
+                                name="venue"
+                                class="form-control"
+                                rows="3"
+                                required></textarea>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Interviewer
+                            </label>
+
+                            <input
+                                type="text"
+                                name="interviewer"
+                                class="form-control"
+                                placeholder="Interviewer Name"
+                                required>
+
+                        </div>
+
+                        <div class="text-center">
+
+                            <button
+                                type="submit"
+                                class="btn btn-success">
+
+                                Schedule Interview
+
+                            </button>
+
+                            <a href="/applications"
+                               class="btn btn-secondary">
+
+                                Back
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

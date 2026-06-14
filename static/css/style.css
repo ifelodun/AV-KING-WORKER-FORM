@@ -165,3 +165,83 @@ body{
     background: #fef3c7;
     color: #92400e;
 }
+
+body{
+    background:#f4f6f9;
+}
+
+.home-container{
+    max-width:1000px;
+    margin:0 auto;
+    padding:30px 15px;
+}
+
+.company-header{
+    text-align:center;
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+    margin-bottom:30px;
+}
+
+.company-header h1{
+    color:#0d6efd;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.company-header h4{
+    color:#555;
+    margin-bottom:15px;
+}
+
+.company-header p{
+    color:#666;
+    margin-bottom:5px;
+}
+
+.action-buttons{
+    text-align:center;
+    margin:30px 0;
+}
+
+.action-buttons .btn{
+    margin:5px;
+    min-width:180px;
+}
+
+.card{
+    border:none;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+
+.card-header{
+    font-weight:600;
+}
+
+.center-card{
+    max-width:1000px;
+    margin:20px auto;
+}
+
+.job-card{
+    margin-bottom:15px;
+}
+
+@media(max-width:768px){
+
+    .company-header{
+        padding:20px;
+    }
+
+    .company-header h1{
+        font-size:28px;
+    }
+
+    .action-buttons .btn{
+        width:100%;
+        margin-bottom:10px;
+    }
+}

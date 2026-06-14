@@ -16,53 +16,226 @@
 
         <div class="card-body">
 
-            <p><strong>Application Number:</strong> {{ application.application_number }}</p>
+            <div class="row">
 
-            <p><strong>Full Name:</strong> {{ application.fullname }}</p>
+                <div class="col-md-3 text-center">
 
-            <p><strong>Email:</strong> {{ application.email }}</p>
+                    {% if application.passport %}
 
-            <p><strong>Phone:</strong> {{ application.phone }}</p>
+                    <img src="{{ url_for(
+                        'static',
+                        filename='uploads/' +
+                        application.passport
+                    ) }}"
+                    class="img-fluid rounded shadow">
 
-            <p><strong>Gender:</strong> {{ application.gender }}</p>
+                    {% endif %}
 
-            <p><strong>Address:</strong> {{ application.address }}</p>
+                </div>
 
-            <p><strong>State Of Origin:</strong> {{ application.state_of_origin }}</p>
+                <div class="col-md-9">
 
-            <p><strong>Next Of Kin:</strong> {{ application.next_of_kin }}</p>
+                    <table class="table table-bordered">
 
-            <p><strong>Next Of Kin Phone:</strong> {{ application.next_of_kin_phone }}</p>
+                        <tr>
+                            <th>Application No</th>
+                            <td>
+                                {{ application.application_number }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Full Name</th>
+                            <td>
+                                {{ application.fullname }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Email</th>
+                            <td>
+                                {{ application.email }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>
+                                {{ application.phone }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Gender</th>
+                            <td>
+                                {{ application.gender }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Address</th>
+                            <td>
+                                {{ application.address }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>State Of Origin</th>
+                            <td>
+                                {{ application.state_of_origin }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Next Of Kin</th>
+                            <td>
+                                {{ application.next_of_kin }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Next Of Kin Phone</th>
+                            <td>
+                                {{ application.next_of_kin_phone }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                {{ application.status }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Date Applied</th>
+                            <td>
+                                {{ application.created_at.strftime('%d-%m-%Y %I:%M %p') }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
 
             <hr>
 
-            <a href="{{ url_for('static', filename='uploads/' + application.passport) }}"
-               target="_blank"
-               class="btn btn-primary">
+            <h5>
+                Documents
+            </h5>
 
-                View Passport
+            <div class="mb-3">
 
-            </a>
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.passport
+                ) }}"
+                target="_blank"
+                class="btn btn-primary">
 
-            <a href="{{ url_for('static', filename='uploads/' + application.cv) }}"
-               target="_blank"
-               class="btn btn-success">
+                    View Passport
 
-                View CV
+                </a>
 
-            </a>
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.passport
+                ) }}"
+                download
+                class="btn btn-outline-primary">
+
+                    Download Passport
+
+                </a>
+
+            </div>
+
+            <div class="mb-3">
+
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.cv
+                ) }}"
+                target="_blank"
+                class="btn btn-success">
+
+                    View CV
+
+                </a>
+
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.cv
+                ) }}"
+                download
+                class="btn btn-outline-success">
+
+                    Download CV
+
+                </a>
+
+            </div>
 
             {% if application.other_document %}
 
-            <a href="{{ url_for('static', filename='uploads/' + application.other_document) }}"
-               target="_blank"
-               class="btn btn-info">
+            <div class="mb-3">
 
-                Other Document
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.other_document
+                ) }}"
+                target="_blank"
+                class="btn btn-info">
+
+                    View Other Document
+
+                </a>
+
+                <a href="{{ url_for(
+                    'static',
+                    filename='uploads/' +
+                    application.other_document
+                ) }}"
+                download
+                class="btn btn-outline-info">
+
+                    Download Other Document
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+            <hr>
+
+            <a href="/approve-application/{{ application.id }}"
+               class="btn btn-success">
+
+                Approve
 
             </a>
 
-            {% endif %}
+            <a href="/reject-application/{{ application.id }}"
+               class="btn btn-danger">
+
+                Reject
+
+            </a>
+
+            <a href="/schedule-interview/{{ application.id }}"
+               class="btn btn-warning">
+
+                Schedule Interview
+
+            </a>
 
             <a href="/applications"
                class="btn btn-secondary">

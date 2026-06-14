@@ -1503,10 +1503,9 @@ def edit_job(id):
             "location"
         ]
 
-        job.deadline = request.form[
-            "deadline"
+        job.closing_date = request.form[
+            "closing_date"
         ]
-
         job.status = request.form[
             "status"
         ]
@@ -1668,7 +1667,7 @@ def create_job():
             requirements=request.form["requirements"],
             salary=request.form["salary"],
             location=request.form["location"],
-            deadline=request.form["deadline"],
+            closing_date=request.form["closing_date"],
             status=request.form["status"]
         )
 

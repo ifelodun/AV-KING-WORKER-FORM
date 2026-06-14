@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Attendance Dashboard</h2>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Total Attendance Records</h5>
+                    <h2>{{ total_attendance }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Late Workers</h5>
+                    <h2 class="text-danger">
+                        {{ late_workers }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5>Today's Attendance</h5>
+                    <h2 class="text-success">
+                        {{ today_attendance }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+        <a href="/attendance-history"
+           class="btn btn-primary">
+            View Attendance Records
+        </a>
+
+        <a href="/dashboard"
+           class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

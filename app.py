@@ -562,6 +562,12 @@ def reset_password(email):
         "reset_password.html"
     )
 
+@app.context_processor
+def inject_settings():
+    return {
+        "settings": CompanySettings.query.first()
+    }
+
 @app.route("/dashboard")
 @login_required
 def dashboard():

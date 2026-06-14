@@ -782,12 +782,15 @@ def admin_settings():
 @login_required
 def settings():
 
-    if current_user.role != "admin":
-
+    
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
         flash("Access Denied")
-
         return redirect("/")
 
+        
     settings = CompanySettings.query.first()
 
     if not settings:
@@ -976,15 +979,32 @@ def add_worker():
     
 @app.route(
     "/profile",
-    methods=["GET"]
+    methods=["GET", "POST"]
 )
 @login_required
 def profile():
 
+    if request.method == "POST":
+
+        current_user.fullname = \
+        request.form["fullname"]
+
+        current_user.email = \
+        request.form["email"]
+
+        db.session.commit()
+
+        flash(
+            "Profile Updated Successfully",
+            "success"
+        )
+
+        return redirect("/profile")
+
     return render_template(
         "profile.html",
         user=current_user
-  )
+    )
 
 @app.route(
     "/change-username",

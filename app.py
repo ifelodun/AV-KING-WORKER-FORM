@@ -53,6 +53,11 @@ app.config[
 
 app.config["UPLOAD_FOLDER"] = "static/uploads"
 
+os.makedirs(
+    app.config["UPLOAD_FOLDER"],
+    exist_ok=True
+)
+
 # Mail Settings
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 
@@ -1503,9 +1508,10 @@ def edit_job(id):
             "location"
         ]
 
-        job.closing_date = request.form[
-            "closing_date"
-        ]
+        job.closing_date = datetime.strptime(
+            request.form["deadline"],
+            "%Y-%m-%d"
+        ).date()
         job.status = request.form[
             "status"
         ]
@@ -1667,7 +1673,10 @@ def create_job():
             requirements=request.form["requirements"],
             salary=request.form["salary"],
             location=request.form["location"],
-            closing_date=request.form["closing_date"],
+            closing_date=datetime.strptime(
+                request.form["deadline"],
+                "%Y-%m-%d"
+            ).date()
             status=request.form["status"]
         )
 

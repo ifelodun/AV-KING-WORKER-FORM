@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Create Job</h2>
+
+    <div class="card">
+        <div class="card-body">
+
+            <form method="POST">
+
+                <input type="text"
+                       name="title"
+                       class="form-control mb-2"
+                       placeholder="Job Title"
+                       required>
+
+                <input type="text"
+                       name="department"
+                       class="form-control mb-2"
+                       placeholder="Department"
+                       required>
+
+                <textarea name="description"
+                          class="form-control mb-2"
+                          placeholder="Job Description"
+                          required></textarea>
+
+                <textarea name="requirements"
+                          class="form-control mb-2"
+                          placeholder="Requirements"
+                          required></textarea>
+
+                <input type="text"
+                       name="salary"
+                       class="form-control mb-2"
+                       placeholder="Salary">
+
+                <input type="text"
+                       name="location"
+                       class="form-control mb-2"
+                       placeholder="Location">
+
+                <input type="date"
+                       name="deadline"
+                       class="form-control mb-2">
+
+                <select name="status"
+                        class="form-control mb-3">
+
+                    <option value="Open">
+                        Open
+                    </option>
+
+                    <option value="Closed">
+                        Closed
+                    </option>
+
+                </select>
+
+                <button class="btn btn-success">
+                    Create Job
+                </button>
+
+                <a href="/jobs"
+                   class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

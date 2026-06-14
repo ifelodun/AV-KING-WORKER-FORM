@@ -7,7 +7,7 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask_login import login_required
 from flask_login import current_user
-
+from flask_mail import Message
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -1908,6 +1908,31 @@ def generate_application_number():
     return f"APP{str(number).zfill(3)}"
 
 @app.route(
+    "/view-application/<int:id>"
+)
+@login_required
+def view_application(id):
+
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+
+        flash("Access Denied")
+
+        return redirect(
+            "/dashboard"
+        )
+
+    application = \
+    Application.query.get_or_404(id)
+
+    return render_template(
+        "view_application.html",
+        application=application
+    )
+    
+@app.route(
     "/schedule-interview/<int:id>",
     methods=["GET", "POST"]
 )
@@ -1920,7 +1945,10 @@ def schedule_interview(id):
 
         interview = Interview(
             application_id=application.id,
-            interview_date=request.form["interview_date"],
+            interview_date=datetime.strptime(
+                request.form["interview_date"],
+                "%Y-%m-%d"
+            ).date(),
             interview_time=request.form["interview_time"],
             interviewer=request.form["interviewer"],
             venue=request.form["venue"]

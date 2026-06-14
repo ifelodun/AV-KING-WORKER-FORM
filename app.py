@@ -1648,7 +1648,7 @@ def generate_application_number():
 def careers():
 
     jobs = Job.query.filter_by(
-        status="open"
+        status="Open"
     ).all()
 
     return render_template(

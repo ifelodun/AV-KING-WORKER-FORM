@@ -1954,6 +1954,9 @@ def view_application(id):
         application=application
     )
     
+from datetime import datetime
+from urllib.parse import quote
+
 @app.route(
     "/schedule-interview/<int:id>",
     methods=["GET", "POST"]
@@ -1961,53 +1964,97 @@ def view_application(id):
 @login_required
 def schedule_interview(id):
 
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+        flash(
+            "Access Denied",
+            "danger"
+        )
+        return redirect("/dashboard")
+
     application = Application.query.get_or_404(id)
 
     if request.method == "POST":
 
         interview = Interview(
+
             application_id=application.id,
+
             interview_date=datetime.strptime(
                 request.form["interview_date"],
                 "%Y-%m-%d"
             ).date(),
-            interview_time=request.form["interview_time"],
-            interviewer=request.form["interviewer"],
-            venue=request.form["venue"]
+
+            interview_time=request.form[
+                "interview_time"
+            ],
+
+            venue=request.form[
+                "venue"
+            ],
+
+            interviewer=request.form[
+                "interviewer"
+            ]
         )
 
-        application.status = "interview_scheduled"
-
         db.session.add(interview)
+
+        application.status = (
+            "Interview Scheduled"
+        )
+
         db.session.commit()
 
-        send_email(
-            application.email,
-            "Interview Invitation",
-            f"""
+        flash(
+            "Interview Scheduled Successfully",
+            "success"
+        )
+
+        message = f"""
+AV KING VET DRUG VENTURE
+
 Dear {application.fullname},
 
 You have been invited for an interview.
 
-Date: {interview.interview_date}
+Interview Date:
+{interview.interview_date}
 
-Time: {interview.interview_time}
+Interview Time:
+{interview.interview_time}
 
-Venue: {interview.venue}
+Venue:
+{interview.venue}
 
-AV KING VET DRUG VENTURE
+Interviewer:
+{interview.interviewer}
+
+Please come along with your credentials.
+
+Thank you.
 """
+
+        phone = application.phone
+
+        if phone.startswith("0"):
+            phone = "234" + phone[1:]
+
+        whatsapp_link = (
+            f"https://wa.me/{phone}"
+            f"?text={quote(message)}"
         )
 
-        flash("Interview Scheduled Successfully")
-
-        return redirect("/applications")
+        return redirect(
+            whatsapp_link
+        )
 
     return render_template(
         "schedule_interview.html",
         application=application
     )
-
 @app.route("/interviews")
 @login_required
 def interviews():
@@ -3054,83 +3101,39 @@ def send_email(
         return False
 
 
-@app.route(
-    "/approve-application/<int:id>"
-)
+@app.route("/approve-application/<int:id>")
 @login_required
 def approve_application(id):
 
-    application = \
-    Application.query.get_or_404(id)
+    application = Application.query.get_or_404(id)
 
     application.status = "Approved"
 
     db.session.commit()
 
-    send_email(
-
-        application.email,
-
-        "Application Approved",
-
-        f"""
-Congratulations.
-
-Your application has been approved.
-
-Application Number:
-{application.application_number}
-
-You may now create your worker account.
-
-AV KING VET DRUG VENTURE
-"""
-    )
-
     flash(
-        "Application Approved Successfully"
+        "Application Approved Successfully",
+        "success"
     )
 
-    return redirect(
-        "/applications"
-    )
+    return redirect("/applications")
 
-@app.route(
-    "/reject-application/<int:id>"
-)
+@app.route("/reject-application/<int:id>")
 @login_required
 def reject_application(id):
 
-    application = \
-    Application.query.get_or_404(id)
+    application = Application.query.get_or_404(id)
 
     application.status = "Rejected"
 
     db.session.commit()
 
-    send_email(
-
-        application.email,
-
-        "Application Update",
-
-        f"""
-Thank you for applying.
-
-Unfortunately your application
-was not successful.
-
-AV KING VET DRUG VENTURE
-"""
-    )
-
     flash(
-        "Application Rejected Successfully"
+        "Application Rejected Successfully",
+        "danger"
     )
 
-    return redirect(
-        "/applications"
-    )
+    return redirect("/applications")
     
 
 class Payroll(db.Model):

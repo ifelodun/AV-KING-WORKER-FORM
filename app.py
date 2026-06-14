@@ -1429,7 +1429,9 @@ class Job(db.Model):
     salary = db.Column(
         db.String(100)
     )
-    
+    location = db.Column(
+        db.String(200)
+     )
     created_at = db.Column(
         db.DateTime,
         default=nigeria_time

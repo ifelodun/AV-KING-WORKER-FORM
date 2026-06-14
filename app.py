@@ -11,7 +11,7 @@ from flask_mail import Message
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
-
+from flask_mail import Mail, Message
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -60,19 +60,11 @@ os.makedirs(
 
 # Mail Settings
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
-
 app.config["MAIL_PORT"] = 587
-
 app.config["MAIL_USE_TLS"] = True
-
-app.config["MAIL_USERNAME"] = os.getenv(
-    "avkingvetdrug@gmail.com"
-)
-
-app.config["MAIL_PASSWORD"] = os.getenv(
-    "fjcfmyffiqvdccrx"
-)
-
+app.config["MAIL_USERNAME"] = "avkingvetdrug@gmail.com"
+app.config["MAIL_PASSWORD"] = "fjcfmyffiqvdccrx"
+app.config["MAIL_DEFAULT_SENDER"] = "avkingvetdrug@gmail.com"
 # Initialize Extensions
 db = SQLAlchemy(app)
 
@@ -2990,6 +2982,7 @@ def contact():
         page=page
     )
 
+
 def send_email(
     recipient,
     subject,
@@ -3016,10 +3009,19 @@ def send_email(
 
         mail.send(msg)
 
+        print(
+            f"Email sent to {recipient}"
+        )
+
+        return True
+
     except Exception as e:
 
-        print(e)
+        print(
+            f"Email Error: {e}"
+        )
 
+        return False
 
 
 @app.route(
@@ -3028,7 +3030,8 @@ def send_email(
 @login_required
 def approve_application(id):
 
-    application = Application.query.get_or_404(id)
+    application = \
+    Application.query.get_or_404(id)
 
     application.status = "Approved"
 
@@ -3054,11 +3057,13 @@ AV KING VET DRUG VENTURE
 """
     )
 
-    flash("Application Approved")
+    flash(
+        "Application Approved Successfully"
+    )
 
-    return redirect("/applications")
-
-
+    return redirect(
+        "/applications"
+    )
 
 @app.route(
     "/reject-application/<int:id>"
@@ -3066,7 +3071,8 @@ AV KING VET DRUG VENTURE
 @login_required
 def reject_application(id):
 
-    application = Application.query.get_or_404(id)
+    application = \
+    Application.query.get_or_404(id)
 
     application.status = "Rejected"
 
@@ -3088,9 +3094,13 @@ AV KING VET DRUG VENTURE
 """
     )
 
-    flash("Application Rejected")
+    flash(
+        "Application Rejected Successfully"
+    )
 
-    return redirect("/applications")
+    return redirect(
+        "/applications"
+    )
     
 
 class Payroll(db.Model):

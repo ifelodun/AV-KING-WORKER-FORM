@@ -2,51 +2,80 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="container">
 
-    <div class="col-md-4">
+    <div class="row justify-content-center">
 
-        <div class="card mt-5">
+        <div class="col-md-5">
 
-            <div class="card-body">
+            <div class="card shadow-lg border-0 mt-5">
 
-                <h3 class="text-center mb-4">
-                    Login
-                </h3>
+                <div class="card-body p-4">
 
-                <form method="POST">
+                    <div class="text-center">
 
-                    <input
-                        type="text"
-                        name="username"
-                        class="form-control mb-3"
-                        placeholder="Username"
-                        required>
+                        {% if settings and settings.logo %}
+                        <img
+                            src="{{ url_for('static',
+                            filename='uploads/' + settings.logo) }}"
+                            width="100"
+                            class="mb-3">
+                        {% endif %}
 
-                    <input
-                        type="password"
-                        name="password"
-                        class="form-control mb-3"
-                        placeholder="Password"
-                        required>
+                        <h3>Login</h3>
 
-                    <button
-                        type="submit"
-                        class="btn btn-primary w-100">
+                        <p class="text-muted">
+                            Human Resource Management System
+                        </p>
 
-                        Login
+                    </div>
 
-                    </button>
+                    <form method="POST">
 
-                </form>
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control mb-3"
+                            placeholder="Username"
+                            required>
 
-                <div class="text-center mt-3">
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control mb-3"
+                            placeholder="Password"
+                            required>
 
-                    <a href="/forgot-password">
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
 
-                        Forgot Password?
+                            Login
 
-                    </a>
+                        </button>
+
+                    </form>
+
+                    <div class="text-center mt-3">
+
+                        <a href="/forgot-password">
+                            Forgot Password?
+                        </a>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="text-center">
+
+                        <a href="/"
+                           class="btn btn-outline-secondary">
+
+                           ← Back to Home
+
+                        </a>
+
+                    </div>
 
                 </div>
 

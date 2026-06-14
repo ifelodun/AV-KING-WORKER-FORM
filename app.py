@@ -1676,7 +1676,7 @@ def create_job():
             closing_date=datetime.strptime(
                 request.form["deadline"],
                 "%Y-%m-%d"
-            ).date()
+            ).date(),
             status=request.form["status"]
         )
 

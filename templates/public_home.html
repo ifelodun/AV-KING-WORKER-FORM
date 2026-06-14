@@ -2,222 +2,207 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container py-5">
 
-    <div class="card shadow-lg border-0">
+    <div class="row justify-content-center">
 
-        <div class="card-body text-center p-5">
+        <div class="col-lg-8 col-md-10">
 
-            {% if settings and settings.logo %}
+            <!-- Company Header -->
 
-            <img
-                src="{{ url_for('static',
-                filename='uploads/' + settings.logo) }}"
-                class="rounded-circle shadow mb-3"
-                width="120"
-                height="120">
+            <div class="card shadow-lg border-0 mb-4">
 
-            {% endif %}
+                <div class="card-body text-center p-5">
 
-            <h1 class="fw-bold text-primary">
-                {{ settings.company_name }}
-            </h1>
+                    {% if settings and settings.logo %}
+                    <img
+                        src="{{ url_for('static', filename='uploads/' + settings.logo) }}"
+                        class="rounded-circle shadow mb-3"
+                        width="130"
+                        height="130">
+                    {% endif %}
 
-            <h5 class="text-muted">
-                Human Resource Management Portal
-            </h5>
+                    <h1 class="fw-bold text-primary">
+                        {{ settings.company_name }}
+                    </h1>
 
-            <p class="mt-3">
-                {{ settings.address }}
-            </p>
-
-            <p>
-                <strong>Phone:</strong>
-                {{ settings.phone }}
-            </p>
-
-            {% if settings.company_email %}
-            <p>
-                <strong>Email:</strong>
-                {{ settings.company_email }}
-            </p>
-            {% endif %}
-
-        </div>
-
-    </div>
-
-    <!-- Action Buttons -->
-
-    <div class="text-center mt-4">
-
-        <a href="/login"
-           class="btn btn-primary btn-lg me-2">
-
-            <i class="bi bi-person-fill"></i>
-            Worker Login
-
-        </a>
-
-        <a href="/admin-login"
-           class="btn btn-danger btn-lg me-2">
-
-            <i class="bi bi-shield-lock-fill"></i>
-            Admin Login
-
-        </a>
-
-        <a href="/careers"
-           class="btn btn-success btn-lg">
-
-            <i class="bi bi-briefcase-fill"></i>
-            Apply For Job
-
-        </a>
-
-    </div>
-
-    <!-- Approved Applicants -->
-
-    <div class="card shadow mt-4">
-
-        <div class="card-header bg-success text-white">
-
-            <i class="bi bi-person-check-fill"></i>
-            Approved Applicants
-
-        </div>
-
-        <div class="card-body text-center">
-
-            <p>
-
-                If your application has been approved,
-                create your worker account here.
-
-            </p>
-
-            <a href="/worker-register"
-               class="btn btn-success">
-
-                Create Account
-
-            </a>
-
-        </div>
-
-    </div>
-
-    <!-- Available Jobs -->
-
-    <div class="card shadow mt-4">
-
-        <div class="card-header bg-dark text-white">
-
-            <i class="bi bi-briefcase-fill"></i>
-            Available Job Openings
-
-        </div>
-
-        <div class="card-body">
-
-            {% if jobs %}
-
-                {% for job in jobs %}
-
-                <div class="border-bottom pb-3 mb-3">
-
-                    <h5>
-                        {{ job.title }}
+                    <h5 class="text-muted">
+                        Human Resource Management Portal
                     </h5>
 
-                    <p>
-                        <strong>Department:</strong>
-                        {{ job.department }}
-                    </p>
+                    <hr>
+
+                    <p>{{ settings.address }}</p>
 
                     <p>
-                        <strong>Location:</strong>
-                        {{ job.location }}
+                        <strong>Phone:</strong>
+                        {{ settings.phone }}
                     </p>
 
+                    {% if settings.company_email %}
                     <p>
-                        <strong>Salary:</strong>
-                        {{ job.salary }}
-                    </p>
-
-                    {% if job.closing_date %}
-                    <p>
-                        <strong>Closing Date:</strong>
-                        {{ job.closing_date }}
+                        <strong>Email:</strong>
+                        {{ settings.company_email }}
                     </p>
                     {% endif %}
 
                 </div>
 
-                {% endfor %}
+            </div>
 
-            {% else %}
+            <!-- Buttons -->
 
-                <div class="alert alert-info">
+            <div class="text-center mb-4">
 
-                    No job openings available at
-                    the moment.
+                <a href="/login"
+                   class="btn btn-primary btn-lg m-1">
+                    Worker Login
+                </a>
+
+                <a href="/admin-login"
+                   class="btn btn-danger btn-lg m-1">
+                    Admin Login
+                </a>
+
+                <a href="/careers"
+                   class="btn btn-success btn-lg m-1">
+                    Apply For Job
+                </a>
+
+            </div>
+
+            <!-- Approved Applicants -->
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-success text-white">
+                    Approved Applicants
+                </div>
+
+                <div class="card-body text-center">
+
+                    <p>
+                        If your application has been approved,
+                        create your worker account here.
+                    </p>
+
+                    <a href="/worker-register"
+                       class="btn btn-success">
+                        Create Account
+                    </a>
 
                 </div>
 
-            {% endif %}
+            </div>
+
+            <!-- Jobs -->
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-dark text-white">
+                    Available Job Openings
+                </div>
+
+                <div class="card-body">
+
+                    {% if jobs %}
+
+                        {% for job in jobs %}
+
+                        <div class="border-bottom pb-3 mb-3">
+
+                            <h4>{{ job.title }}</h4>
+
+                            <p>
+                                <strong>Department:</strong>
+                                {{ job.department }}
+                            </p>
+
+                            <p>
+                                <strong>Location:</strong>
+                                {{ job.location }}
+                            </p>
+
+                            <p>
+                                <strong>Salary:</strong>
+                                {{ job.salary }}
+                            </p>
+
+                            {% if job.closing_date %}
+                            <p>
+                                <strong>Closing Date:</strong>
+                                {{ job.closing_date }}
+                            </p>
+                            {% endif %}
+
+                            <a href="/apply/{{ job.id }}"
+                               class="btn btn-success">
+                                Apply Now
+                            </a>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="alert alert-info">
+                            No job openings available at the moment.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <!-- About -->
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-primary text-white">
+                    About Us
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+
+                        Welcome to
+                        <strong>{{ settings.company_name }}</strong>.
+
+                        We are committed to providing quality
+                        veterinary products, excellent customer
+                        service and rewarding career opportunities.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+
+            <footer class="text-center mt-4">
+
+                <hr>
+
+                <p class="text-muted">
+
+                    © {{ current_year }}
+                    {{ settings.company_name }}
+
+                    <br>
+
+                    Human Resource Management System
+
+                </p>
+
+            </footer>
 
         </div>
 
     </div>
-
-    <!-- About Company -->
-
-    <div class="card shadow mt-4">
-
-        <div class="card-header bg-primary text-white">
-
-            <i class="bi bi-building"></i>
-            About Us
-
-        </div>
-
-        <div class="card-body">
-
-            <p>
-
-                Welcome to
-                <strong>{{ settings.company_name }}</strong>.
-
-                We are committed to providing quality
-                veterinary products, excellent customer
-                service, and rewarding career opportunities.
-
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- Footer -->
-
-    <footer class="text-center mt-5 mb-4">
-
-        <hr>
-
-        <p class="text-muted">
-
-            © {{ current_year }}
-            {{ settings.company_name }}
-
-            <br>
-
-            Human Resource Management System
-
-        </p>
-
-    </footer>
 
 </div>
 

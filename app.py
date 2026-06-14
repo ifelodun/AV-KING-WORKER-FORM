@@ -2087,7 +2087,7 @@ def worker_register():
         Application.query.filter_by(
             application_number=
             application_number,
-            status="approved"
+            status="Approved"
         ).first()
 
         if not application:

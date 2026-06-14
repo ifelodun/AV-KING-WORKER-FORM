@@ -2,38 +2,212 @@
 
 {% block content %}
 
-<h2>
+<div class="container mt-4">
 
-Apply For
+    <div class="row justify-content-center">
 
-{{job.title}}
+        <div class="col-md-8">
 
-</h2>
+            <div class="card shadow">
 
-<form method="POST">
+                <div class="card-header bg-primary text-white">
 
-<input
-class="form-control mb-3"
-name="fullname"
-placeholder="Full Name">
+                    <h3>
+                        Apply For Position
+                    </h3>
 
-<input
-class="form-control mb-3"
-name="email"
-placeholder="Email">
+                    <p class="mb-0">
+                        {{ job.title }}
+                    </p>
 
-<input
-class="form-control mb-3"
-name="phone"
-placeholder="Phone">
+                </div>
 
-<button
-class="btn btn-success">
+                <div class="card-body">
 
-Submit Application
+                    <form method="POST"
+                          enctype="multipart/form-data">
 
-</button>
+                        <div class="mb-3">
 
-</form>
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input type="text"
+                                   name="fullname"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Email Address
+                            </label>
+
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input type="text"
+                                   name="phone"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Gender
+                            </label>
+
+                            <select name="gender"
+                                    class="form-control"
+                                    required>
+
+                                <option value="">
+                                    Select Gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Residential Address
+                            </label>
+
+                            <textarea name="address"
+                                      class="form-control"
+                                      rows="3"
+                                      required></textarea>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                State Of Origin
+                            </label>
+
+                            <input type="text"
+                                   name="state_of_origin"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Name of Next of Kin / Guarantor
+                            </label>
+
+                            <input type="text"
+                                   name="next_of_kin"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Phone Number of Next of Kin / Guarantor
+                            </label>
+
+                            <input type="text"
+                                   name="next_of_kin_phone"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Passport Photograph
+                            </label>
+
+                            <input type="file"
+                                   name="passport"
+                                   class="form-control"
+                                   accept="image/*"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                CV / Application Letter
+                            </label>
+
+                            <input type="file"
+                                   name="cv"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>
+                                Other Documents
+                                (Optional)
+                            </label>
+
+                            <input type="file"
+                                   name="other_document"
+                                   class="form-control">
+
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            Submit Application
+
+                        </button>
+
+                        <a href="/careers"
+                           class="btn btn-secondary">
+
+                            Back
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

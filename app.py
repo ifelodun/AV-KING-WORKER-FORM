@@ -1054,6 +1054,29 @@ def change_username():
     )
 
 @app.route(
+    "/update-profile",
+    methods=["POST"]
+)
+@login_required
+def update_profile():
+
+    current_user.username = \
+    request.form["username"]
+
+    current_user.email = \
+    request.form["email"]
+
+    db.session.commit()
+
+    flash(
+        "Profile Updated Successfully",
+        "success"
+    )
+
+    return redirect("/profile")
+
+
+@app.route(
     "/admin-login",
     methods=["GET","POST"]
 )

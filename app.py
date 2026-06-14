@@ -66,9 +66,10 @@ app.config["MAIL_USERNAME"] = "avkingvetdrug@gmail.com"
 app.config["MAIL_PASSWORD"] = "fjcfmyffiqvdccrx"
 app.config["MAIL_DEFAULT_SENDER"] = "avkingvetdrug@gmail.com"
 # Initialize Extensions
-db = SQLAlchemy(app)
 
 mail = Mail(app)
+db = SQLAlchemy(app)
+
 
 login_manager = LoginManager()
 
@@ -110,7 +111,20 @@ def generate_employee_id():
         number = 1
 
     return f"AVKV{str(number).zfill(3)}"
+@app.route("/test-email")
+def test_email():
 
+    msg = Message(
+        "Test Email",
+        sender="avkingvetdrug@gmail.com",
+        recipients=["YOURPERSONALEMAIL@gmail.com"]
+    )
+
+    msg.body = "Email is working successfully."
+
+    mail.send(msg)
+
+    return "Email Sent"
 class User(UserMixin, db.Model):
 
     __tablename__ = "users"

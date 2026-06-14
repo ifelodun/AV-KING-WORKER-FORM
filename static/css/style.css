@@ -245,3 +245,28 @@ body{
         margin-bottom:10px;
     }
 }
+
+<style>
+
+body{
+    background:#f4f6f9;
+}
+
+.card{
+    border-radius:15px;
+}
+
+.card-header{
+    font-weight:bold;
+}
+
+.btn{
+    border-radius:8px;
+}
+
+img.rounded-circle{
+    object-fit:cover;
+    border:4px solid white;
+}
+
+</style>

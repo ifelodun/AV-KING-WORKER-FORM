@@ -64,7 +64,6 @@ app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = "avkingvetdrug@gmail.com"
 app.config["MAIL_PASSWORD"] = "ymzdpywlhvxpimaz"
-app.config["MAIL_DEFAULT_SENDER"] = "avkingvetdrug@gmail.com"
 # Initialize Extensions
 
 mail = Mail(app)
@@ -111,20 +110,35 @@ def generate_employee_id():
         number = 1
 
     return f"AVKV{str(number).zfill(3)}"
+
 @app.route("/test-email")
 def test_email():
 
-    msg = Message(
-        "Test Email",
-        sender="avkingvetdrug@gmail.com",
-        recipients=["YOURPERSONALEMAIL@gmail.com"]
-    )
+    try:
 
-    msg.body = "Email is working successfully."
+        print("SERVER:", app.config["MAIL_SERVER"])
+        print("PORT:", app.config["MAIL_PORT"])
+        print("USER:", app.config["MAIL_USERNAME"])
 
-    mail.send(msg)
+        msg = Message(
+            subject="TEST",
+            sender=app.config["MAIL_USERNAME"],
+            recipients=["YOUR_OTHER_EMAIL@gmail.com"]
+        )
 
-    return "Email Sent"
+        msg.body = "Test"
+
+        mail.send(msg)
+
+        return "EMAIL SENT"
+
+    except Exception as e:
+
+        print("EMAIL ERROR:", e)
+
+        return str(e)
+
+
 class User(UserMixin, db.Model):
 
     __tablename__ = "users"

@@ -2,51 +2,211 @@
 
 {% block content %}
 
-<h2>
+<div class="container mt-4">
 
-Welcome
+    <div class="row">
 
-{{current_user.fullname}}
+        <div class="col-md-4">
 
-</h2>
+            <div class="card shadow">
 
-<div class="mb-3">
+                <div class="card-body text-center">
 
-<a
-class="btn btn-success"
-href="/clock-in">
+                    {% if current_user.passport %}
 
-Clock In
+                    <img
+                        src="{{ url_for('static', filename='uploads/' + current_user.passport) }}"
+                        class="rounded-circle shadow mb-3"
+                        width="150"
+                        height="150">
 
-</a>
+                    {% endif %}
 
-<a
-class="btn btn-danger"
-href="/clock-out">
+                    <h4>{{ current_user.fullname }}</h4>
 
-Clock Out
+                    <hr>
 
-</a>
+                    <p>
+                        <strong>Employee ID:</strong>
+                        {{ current_user.employee_id }}
+                    </p>
 
-</div>
+                    <p>
+                        <strong>Application Number:</strong>
+                        {{ current_user.application_number }}
+                    </p>
 
-<div class="mb-3">
+                    <p>
+                        <strong>Email:</strong>
+                        {{ current_user.email }}
+                    </p>
 
-<a
-class="btn btn-primary"
-href="/attendance-history">
+                    <p>
+                        <strong>Phone:</strong>
+                        {{ current_user.phone }}
+                    </p>
 
-Attendance History
+                    <p>
+                        <strong>Position:</strong>
+                        {{ current_user.position }}
+                    </p>
 
-</a>
+                </div>
 
-<a
-class="btn btn-warning"
-href="/apply-leave">
+            </div>
 
-Apply Leave
+        </div>
 
-</a>
+        <div class="col-md-8">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h5>
+
+                        Welcome {{ current_user.fullname }}
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    {% if today_attendance %}
+
+                    <div class="alert alert-info">
+
+                        <strong>Status:</strong>
+
+                        {{ today_attendance.status }}
+
+                        <br>
+
+                        <strong>Clock In:</strong>
+
+                        {{ today_attendance.clock_in }}
+
+                        {% if today_attendance.clock_out %}
+
+                        <br>
+
+                        <strong>Clock Out:</strong>
+
+                        {{ today_attendance.clock_out }}
+
+                        {% endif %}
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="alert alert-warning">
+
+                        You have not clocked in today.
+
+                    </div>
+
+                    {% endif %}
+
+                    <a
+                    href="/clock-in"
+                    class="btn btn-success">
+
+                    Clock In
+
+                    </a>
+
+                    <a
+                    href="/clock-out"
+                    class="btn btn-danger">
+
+                    Clock Out
+
+                    </a>
+
+                    <a
+                    href="/attendance-history"
+                    class="btn btn-primary">
+
+                    Attendance History
+
+                    </a>
+
+                    <a
+                    href="/apply-leave"
+                    class="btn btn-warning">
+
+                    Apply Leave
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white">
+
+                    Recent Attendance
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Clock In</th>
+                                <th>Clock Out</th>
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for attendance in attendances %}
+
+                            <tr>
+
+                                <td>
+                                    {{ attendance.attendance_date }}
+                                </td>
+
+                                <td>
+                                    {{ attendance.clock_in }}
+                                </td>
+
+                                <td>
+                                    {{ attendance.clock_out or "-" }}
+                                </td>
+
+                                <td>
+                                    {{ attendance.status }}
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 

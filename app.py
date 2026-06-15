@@ -1515,6 +1515,47 @@ class Job(db.Model):
   )
 
 @app.route(
+    "/add-announcement",
+    methods=["GET", "POST"]
+)
+@login_required
+def add_announcement():
+
+    if current_user.role != "admin":
+
+        flash("Access Denied")
+
+        return redirect("/")
+
+    if request.method == "POST":
+
+        announcement = Announcement(
+
+            title=request.form["title"],
+
+            message=request.form["message"]
+
+        )
+
+        db.session.add(
+            announcement
+        )
+
+        db.session.commit()
+
+        flash(
+            "Announcement Added Successfully"
+        )
+
+        return redirect(
+            "/announcements"
+        )
+
+    return render_template(
+        "add_announcement.html"
+    )
+    
+@app.route(
     "/delete-job/<int:id>"
 )
 @login_required

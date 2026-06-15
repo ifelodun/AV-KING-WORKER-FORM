@@ -186,12 +186,15 @@ class User(UserMixin, db.Model):
         db.String(100)
     )
 
+    phone = db.Column(db.String(50))
+
+    passport = db.Column(db.String(255))
+
+    application_number = db.Column(db.String(50))
+
+    position = db.Column(db.String(100))
     profile_photo = db.Column(
         db.String(255)
-    )
-
-    phone = db.Column(
-        db.String(20)
     )
 
     address = db.Column(
@@ -2292,27 +2295,27 @@ def departments():
 @login_required
 def worker_dashboard():
 
-    attendance_count = \
-    Attendance.query.filter_by(
-        employee_id=
-        current_user.employee_id
-    ).count()
+    if current_user.role != "worker":
 
-    leave_count = \
-    LeaveRequest.query.filter_by(
-        employee_id=
-        current_user.employee_id
-    ).count()
+        flash("Access Denied")
+
+        return redirect("/")
+
+    today_attendance = Attendance.query.filter_by(
+        employee_id=current_user.employee_id,
+        attendance_date=nigeria_time().date()
+    ).first()
+
+    attendances = Attendance.query.filter_by(
+        employee_id=current_user.employee_id
+    ).order_by(
+        Attendance.id.desc()
+    ).limit(20).all()
 
     return render_template(
-
         "worker_dashboard.html",
-
-        attendance_count=
-        attendance_count,
-
-        leave_count=
-        leave_count
+        today_attendance=today_attendance,
+        attendances=attendances
     )
 
 @app.route("/clock-in")

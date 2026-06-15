@@ -2385,7 +2385,9 @@ def worker_dashboard():
         employee_id=current_user.employee_id,
         attendance_date=nigeria_time().date()
     ).first()
-
+    announcements = Announcement.query.order_by(
+    Announcement.id.desc()
+).all()
     attendances = Attendance.query.filter_by(
         employee_id=current_user.employee_id
     ).order_by(
@@ -2395,7 +2397,8 @@ def worker_dashboard():
     return render_template(
         "worker_dashboard.html",
         today_attendance=today_attendance,
-        attendances=attendances
+        attendances=attendances,
+        announcements=announcements
     )
 
 @app.route("/clock-in")
@@ -3221,7 +3224,6 @@ def reject_application(id):
 
     return redirect("/applications")
     
-
 class Payroll(db.Model):
 
     id = db.Column(
@@ -3230,40 +3232,53 @@ class Payroll(db.Model):
     )
 
     employee_id = db.Column(
-        db.String(20)
+        db.String(50),
+        nullable=False
     )
 
     fullname = db.Column(
-        db.String(255)
-    )
-
-    basic_salary = db.Column(
-        db.Float
-    )
-
-    allowance = db.Column(
-        db.Float
-    )
-
-    deduction = db.Column(
-        db.Float
-    )
-
-    net_salary = db.Column(
-        db.Float
+        db.String(200),
+        nullable=False
     )
 
     month = db.Column(
-        db.String(20)
+        db.String(50),
+        nullable=False
     )
 
-    year = db.Column(
-        db.String(10)
+    basic_salary = db.Column(
+        db.Float,
+        default=0
+    )
+
+    allowance = db.Column(
+        db.Float,
+        default=0
+    )
+
+    bonus = db.Column(
+        db.Float,
+        default=0
+    )
+
+    deduction = db.Column(
+        db.Float,
+        default=0
+    )
+
+    net_salary = db.Column(
+        db.Float,
+        default=0
+    )
+
+    payment_status = db.Column(
+        db.String(50),
+        default="Pending"
     )
 
     created_at = db.Column(
         db.DateTime,
-        default=nigeria_time
+        default=datetime.utcnow
     )
 
 @app.route(
@@ -3354,14 +3369,18 @@ def create_payroll():
         "create_payroll.html"
     )
 
-@app.route("/payrolls")
+@app.route("/payroll")
 @login_required
-def payrolls():
+def payroll():
 
-    payrolls = Payroll.query.all()
+    payrolls = Payroll.query.filter_by(
+        employee_id=current_user.employee_id
+    ).order_by(
+        Payroll.id.desc()
+    ).all()
 
     return render_template(
-        "payrolls.html",
+        "payroll.html",
         payrolls=payrolls
     )
 

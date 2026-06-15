@@ -2,34 +2,116 @@
 
 {% block content %}
 
-<h2>Payroll Records</h2>
+<div class="container mt-4">
 
-<table class="table">
+    <div class="card shadow">
 
-<tr>
+        <div class="card-header bg-success text-white">
 
-<th>Name</th>
+            <h4>
 
-<th>Month</th>
+                My Payroll
 
-<th>Salary</th>
+            </h4>
 
-</tr>
+        </div>
 
-{% for p in payrolls %}
+        <div class="card-body">
 
-<tr>
+            {% if payrolls %}
 
-<td>{{p.fullname}}</td>
+            <div class="table-responsive">
 
-<td>{{p.month}}</td>
+                <table class="table table-bordered">
 
-<td>₦{{p.net_salary}}</td>
+                    <thead>
 
-</tr>
+                        <tr>
 
-{% endfor %}
+                            <th>Month</th>
+                            <th>Basic Salary</th>
+                            <th>Allowance</th>
+                            <th>Bonus</th>
+                            <th>Deduction</th>
+                            <th>Net Salary</th>
+                            <th>Status</th>
 
-</table>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for payroll in payrolls %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ payroll.month }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.basic_salary }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.allowance }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.bonus }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.deduction }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.net_salary }}
+
+                            </td>
+
+                            <td>
+
+                                {{ payroll.payment_status }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-info">
+
+                No payroll record available.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

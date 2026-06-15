@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+
+            <h4>Apply For Leave</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label>
+                        Leave Type
+                    </label>
+
+                    <select
+                        name="leave_type"
+                        class="form-control"
+                        required>
+
+                        <option value="">
+                            Select Leave Type
+                        </option>
+
+                        <option value="Annual Leave">
+                            Annual Leave
+                        </option>
+
+                        <option value="Sick Leave">
+                            Sick Leave
+                        </option>
+
+                        <option value="Casual Leave">
+                            Casual Leave
+                        </option>
+
+                        <option value="Maternity Leave">
+                            Maternity Leave
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+                        Start Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="start_date"
+                        class="form-control"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+                        End Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="end_date"
+                        class="form-control"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+                        Reason
+                    </label>
+
+                    <textarea
+                        name="reason"
+                        class="form-control"
+                        rows="5"
+                        required>
+                    </textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    Submit Leave Request
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

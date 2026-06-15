@@ -2607,10 +2607,11 @@ def attendance_percentage(
         (present / total) * 100,
         2
     )
+from datetime import datetime
 
 @app.route(
     "/apply-leave",
-    methods=["GET","POST"]
+    methods=["GET", "POST"]
 )
 @login_required
 def apply_leave():
@@ -2636,7 +2637,7 @@ def apply_leave():
                     "start_date"
                 ],
                 "%Y-%m-%d"
-            ),
+            ).date(),
 
             end_date=
             datetime.strptime(
@@ -2644,12 +2645,14 @@ def apply_leave():
                     "end_date"
                 ],
                 "%Y-%m-%d"
-            ),
+            ).date(),
 
             reason=
             request.form[
                 "reason"
-            ]
+            ],
+
+            status="Pending"
         )
 
         db.session.add(
@@ -2659,7 +2662,7 @@ def apply_leave():
         db.session.commit()
 
         flash(
-            "Leave Submitted"
+            "Leave Request Submitted Successfully"
         )
 
         return redirect(

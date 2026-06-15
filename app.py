@@ -2071,8 +2071,6 @@ def interviews():
         interviews=interviews
     )
 
-
-
 @app.route(
     "/worker-register",
     methods=["GET", "POST"]
@@ -2081,13 +2079,11 @@ def worker_register():
 
     if request.method == "POST":
 
-        application_number = \
-        request.form[
+        application_number = request.form[
             "application_number"
         ]
 
-        application = \
-        Application.query.filter_by(
+        application = Application.query.filter_by(
             application_number=
             application_number,
             status="Approved"
@@ -2097,6 +2093,21 @@ def worker_register():
 
             flash(
                 "Application Not Approved"
+            )
+
+            return redirect(
+                "/worker-register"
+            )
+
+        existing_user = User.query.filter_by(
+            application_number=
+            application.application_number
+        ).first()
+
+        if existing_user:
+
+            flash(
+                "Account Already Exists"
             )
 
             return redirect(
@@ -2119,6 +2130,18 @@ def worker_register():
             email=
             application.email,
 
+            phone=
+            application.phone,
+
+            passport=
+            application.passport,
+
+            application_number=
+            application.application_number,
+
+            position=
+            "Sales Representative",
+
             password=
             generate_password_hash(
                 request.form[
@@ -2129,19 +2152,24 @@ def worker_register():
             role="worker"
         )
 
-        db.session.add(worker)
+        db.session.add(
+            worker
+        )
 
         db.session.commit()
 
         flash(
-            "Account Created"
+            "Account Created Successfully"
         )
 
-        return redirect("/login")
+        return redirect(
+            "/login"
+        )
 
     return render_template(
         "worker_register.html"
     )
+
 
 class Department(db.Model):
 

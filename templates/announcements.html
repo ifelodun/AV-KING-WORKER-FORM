@@ -2,61 +2,64 @@
 
 {% block content %}
 
-<h2>Company Announcements</h2>
+<div class="container mt-4">
 
-{% if current_user.role in ["admin", "super_admin"] %}
+    <div class="card shadow">
 
-<a href="/create-announcement"
-class="btn btn-success mb-3">
+        <div class="card-header bg-primary text-white">
 
-    New Announcement
+            <h4>
 
-</a>
+                Company Announcements
 
-{% endif %}
+            </h4>
 
-{% for announcement in announcements %}
+        </div>
 
-<div class="card mb-3">
+        <div class="card-body">
 
-    <div class="card-body">
+            {% if announcements %}
 
-        <h4>
-            {{ announcement.title }}
-        </h4>
+                {% for announcement in announcements %}
 
-        <p>
-            {{ announcement.message }}
-        </p>
+                <div class="border-bottom mb-3 pb-3">
 
-        <small>
-            {{ announcement.created_by }}
-        </small>
+                    <h5>
 
-        <br><br>
+                        {{ announcement.title }}
 
-        {% if current_user.role in ["admin", "super_admin"] %}
+                    </h5>
 
-        <a href="/edit-announcement/{{ announcement.id }}"
-        class="btn btn-warning btn-sm">
+                    <p>
 
-            Edit
+                        {{ announcement.message }}
 
-        </a>
+                    </p>
 
-        <a href="/delete-announcement/{{ announcement.id }}"
-        class="btn btn-danger btn-sm">
+                    <small class="text-muted">
 
-            Delete
+                        {{ announcement.created_at }}
 
-        </a>
+                    </small>
 
-        {% endif %}
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="alert alert-info">
+
+                    No announcements available.
+
+                </div>
+
+            {% endif %}
+
+        </div>
 
     </div>
 
 </div>
-
-{% endfor %}
 
 {% endblock %}

@@ -2021,13 +2021,17 @@ AV KING VET DRUG VENTURE
 
 Dear {application.fullname},
 
-You have been invited for an interview.
+We are pleased to inform you that you have been shortlisted and invited to attend an interview for employment with AV KING VET DRUG VENTURE.
 
-Interview Date:
-{interview.interview_date}
+Applicant Details
+-------------------------
+Application Number: {application.application_number}
 
-Interview Time:
-{interview.interview_time}
+Interview Details
+-------------------------
+Interview Date: {interview.interview_date}
+
+Interview Time: {interview.interview_time}
 
 Venue:
 {interview.venue}
@@ -2035,9 +2039,16 @@ Venue:
 Interviewer:
 {interview.interviewer}
 
-Please come along with your credentials.
+Please arrive at the venue at least 30 minutes before the scheduled time and come along with all relevant credentials and supporting documents for verification.
 
-Thank you.
+Kindly treat this invitation as important and confirm your availability.
+
+We wish you success and look forward to meeting you.
+
+Yours faithfully,
+
+Human Resources Department
+AV KING VET DRUG VENTURE
 """
 
         phone = application.phone

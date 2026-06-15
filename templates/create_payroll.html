@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h4>
+
+                Create Payroll
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Select Worker
+
+                    </label>
+
+                    <select
+                    name="worker_id"
+                    class="form-control"
+                    required>
+
+                        <option value="">
+
+                            Select Worker
+
+                        </option>
+
+                        {% for worker in workers %}
+
+                        <option
+                        value="{{ worker.id }}">
+
+                            {{ worker.fullname }}
+                            ({{ worker.employee_id }})
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Month
+
+                    </label>
+
+                    <input
+                    type="text"
+                    name="month"
+                    class="form-control"
+                    placeholder="June 2026"
+                    required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Basic Salary (₦)
+
+                    </label>
+
+                    <input
+                    type="number"
+                    name="basic_salary"
+                    class="form-control"
+                    required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Allowance (₦)
+
+                    </label>
+
+                    <input
+                    type="number"
+                    name="allowance"
+                    class="form-control"
+                    value="0">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Bonus (₦)
+
+                    </label>
+
+                    <input
+                    type="number"
+                    name="bonus"
+                    class="form-control"
+                    value="0">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Deduction (₦)
+
+                    </label>
+
+                    <input
+                    type="number"
+                    name="deduction"
+                    class="form-control"
+                    value="0">
+
+                </div>
+
+                <button
+                type="submit"
+                class="btn btn-success">
+
+                    Create Payroll
+
+                </button>
+
+                <a
+                href="/payroll"
+                class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

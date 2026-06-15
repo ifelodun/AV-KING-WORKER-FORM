@@ -343,7 +343,7 @@ def create_super_admin():
 
             username="superadmin",
 
-            email="admin@avking.com",
+            email="avkingvetdrug@gmail.com",
 
             password=generate_password_hash(
                 "Admin@123"
@@ -366,13 +366,21 @@ def log_action(username, action):
     db.session.add(log)
     db.session.commit()
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
 def login():
 
     if request.method == "POST":
 
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form[
+            "username"
+        ]
+
+        password = request.form[
+            "password"
+        ]
 
         user = User.query.filter_by(
             username=username
@@ -380,22 +388,29 @@ def login():
 
         if not user:
 
-            flash("Invalid username or password")
-            return redirect("/login")
+            flash(
+                "Invalid username or password"
+            )
 
-        # Account Lock Check
+            return redirect(
+                "/login"
+            )
+
+        # Check if account is locked
 
         if user.locked_until:
 
             if user.locked_until > nigeria_time():
 
                 flash(
-                    "Account temporarily locked."
+                    "Account temporarily locked. Try again later."
                 )
 
-                return redirect("/login")
+                return redirect(
+                    "/login"
+                )
 
-        # Password Check
+        # Check password
 
         if check_password_hash(
             user.password,
@@ -403,6 +418,8 @@ def login():
         ):
 
             user.failed_attempts = 0
+
+            user.locked_until = None
 
             db.session.commit()
 
@@ -413,7 +430,25 @@ def login():
                 "User Logged In"
             )
 
-            return redirect("/dashboard")
+            # Redirect based on role
+
+            if user.role == "admin":
+
+                return redirect(
+                    "/dashboard"
+                )
+
+            elif user.role == "worker":
+
+                return redirect(
+                    "/worker-dashboard"
+                )
+
+            else:
+
+                return redirect(
+                    "/"
+                )
 
         else:
 
@@ -423,7 +458,9 @@ def login():
 
                 user.locked_until = (
                     nigeria_time()
-                    + timedelta(minutes=15)
+                    + timedelta(
+                        minutes=15
+                    )
                 )
 
             db.session.commit()
@@ -432,7 +469,9 @@ def login():
                 "Invalid username or password"
             )
 
-            return redirect("/login")
+            return redirect(
+                "/login"
+            )
 
     return render_template(
         "login.html"
@@ -450,7 +489,9 @@ def logout():
 
     logout_user()
 
-    return redirect("/login")
+    return redirect(
+        "/login"
+                )
 
 @app.route(
     "/forgot-password",

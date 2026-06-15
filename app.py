@@ -3311,7 +3311,9 @@ class Payroll(db.Model):
         db.Float,
         default=0
     )
-
+    position = db.Column(
+        db.String(100)
+    )
     payment_status = db.Column(
         db.String(50),
         default="Pending"
@@ -3324,12 +3326,16 @@ class Payroll(db.Model):
 
 @app.route(
     "/create-payroll",
-    methods=["GET","POST"]
+    methods=["GET", "POST"]
 )
 @login_required
 def create_payroll():
 
-    if not admin_required():
+    if current_user.role != "admin":
+
+        flash(
+            "Access Denied"
+        )
 
         return redirect(
             "/dashboard"
@@ -3337,35 +3343,49 @@ def create_payroll():
 
     if request.method == "POST":
 
+        worker = User.query.get(
+            request.form["worker_id"]
+        )
+
+        if not worker:
+
+            flash(
+                "Worker Not Found"
+            )
+
+            return redirect(
+                "/create-payroll"
+            )
+
         basic_salary = float(
-            request.form[
-                "basic_salary"
-            ]
+            request.form["basic_salary"]
         )
 
         allowance = float(
-            request.form[
-                "allowance"
-            ]
+            request.form["allowance"]
+        )
+
+        bonus = float(
+            request.form["bonus"]
         )
 
         deduction = float(
-            request.form[
-                "deduction"
-            ]
+            request.form["deduction"]
         )
 
         payroll = Payroll(
 
             employee_id=
-            request.form[
-                "employee_id"
-            ],
+            worker.employee_id,
 
             fullname=
-            request.form[
-                "fullname"
-            ],
+            worker.fullname,
+
+            position=
+            worker.position,
+
+            month=
+            request.form["month"],
 
             basic_salary=
             basic_salary,
@@ -3373,23 +3393,18 @@ def create_payroll():
             allowance=
             allowance,
 
+            bonus=
+            bonus,
+
             deduction=
             deduction,
 
             net_salary=
             basic_salary
             + allowance
-            - deduction,
+            + bonus
+            - deduction
 
-            month=
-            request.form[
-                "month"
-            ],
-
-            year=
-            request.form[
-                "year"
-            ]
         )
 
         db.session.add(
@@ -3399,15 +3414,20 @@ def create_payroll():
         db.session.commit()
 
         flash(
-            "Payroll Created"
+            "Payroll Created Successfully"
         )
 
         return redirect(
-            "/payrolls"
+            "/payroll"
         )
 
+    workers = User.query.filter_by(
+        role="worker"
+    ).all()
+
     return render_template(
-        "create_payroll.html"
+        "create_payroll.html",
+        workers=workers
     )
 
 @app.route("/payroll")

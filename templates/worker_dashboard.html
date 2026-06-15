@@ -59,6 +59,59 @@
 
         <div class="col-md-8">
 
+    <!-- Announcements -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-info text-white">
+
+            <h5>
+
+                Company Announcements
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if announcements %}
+
+                {% for announcement in announcements %}
+
+                <div class="alert alert-info">
+
+                    <h5>
+
+                        {{ announcement.title }}
+
+                    </h5>
+
+                    <p>
+
+                        {{ announcement.message }}
+
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="alert alert-secondary">
+
+                    No announcements available.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
             <div class="card shadow mb-4">
 
                 <div class="card-header bg-primary text-white">

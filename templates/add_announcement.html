@@ -4,7 +4,7 @@
 
 <div class="container mt-4">
 
-    <div class="card shadow">
+    <div class="card shadow mb-4">
 
         <div class="card-header bg-primary text-white">
 
@@ -22,7 +22,7 @@
 
                 <div class="mb-3">
 
-                    <label>
+                    <label class="form-label">
 
                         Title
 
@@ -38,7 +38,7 @@
 
                 <div class="mb-3">
 
-                    <label>
+                    <label class="form-label">
 
                         Message
 
@@ -53,13 +53,70 @@
                 </div>
 
                 <button
+                type="submit"
                 class="btn btn-success">
 
-                Publish Announcement
+                    Publish Announcement
 
                 </button>
 
             </form>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+
+            <h4>
+
+                Previous Announcements
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if announcements %}
+
+                {% for announcement in announcements %}
+
+                <div class="alert alert-info">
+
+                    <h5>
+
+                        {{ announcement.title }}
+
+                    </h5>
+
+                    <p>
+
+                        {{ announcement.message }}
+
+                    </p>
+
+                    <small class="text-muted">
+
+                        {{ announcement.created_at }}
+
+                    </small>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="alert alert-warning">
+
+                    No announcements available.
+
+                </div>
+
+            {% endif %}
 
         </div>
 

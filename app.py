@@ -2838,20 +2838,21 @@ def reject_leave(id):
 @login_required
 def attendance_dashboard():
 
-    total_attendance = \
-    Attendance.query.count()
+    total_attendance = Attendance.query.count()
 
-    late_workers = \
-    Attendance.query.filter_by(
+    late_workers = Attendance.query.filter_by(
         status="Late"
     ).count()
 
     today = nigeria_time().date()
 
-    today_attendance = \
-    Attendance.query.filter_by(
+    today_attendance = Attendance.query.filter_by(
         attendance_date=today
     ).count()
+
+    attendances = Attendance.query.order_by(
+        Attendance.id.desc()
+    ).all()
 
     return render_template(
 
@@ -2864,9 +2865,11 @@ def attendance_dashboard():
         late_workers,
 
         today_attendance=
-        today_attendance
-    )
+        today_attendance,
 
+        attendances=
+        attendances
+    )
 class Announcement(db.Model):
 
     id = db.Column(

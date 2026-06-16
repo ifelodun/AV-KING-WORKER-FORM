@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h4>
+
+                My Payroll
+
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if payrolls %}
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Month</th>
+                            <th>Basic Salary</th>
+                            <th>Allowance</th>
+                            <th>Bonus</th>
+                            <th>Deduction</th>
+                            <th>Net Salary</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for payroll in payrolls %}
+
+                        <tr>
+
+                            <td>
+
+                                {{ payroll.month }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.basic_salary }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.allowance }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.bonus }}
+
+                            </td>
+
+                            <td>
+
+                                ₦{{ payroll.deduction }}
+
+                            </td>
+
+                            <td>
+
+                                <strong>
+
+                                    ₦{{ payroll.net_salary }}
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                {% if payroll.payment_status == "Paid" %}
+
+                                <span class="badge bg-success">
+
+                                    Paid
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-warning">
+
+                                    Pending
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-info">
+
+                No payroll records available.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -2427,8 +2427,13 @@ def worker_dashboard():
         attendance_date=nigeria_time().date()
     ).first()
     announcements = Announcement.query.order_by(
-    Announcement.id.desc()
-).all()
+        Announcement.id.desc()
+    ).all()
+    notifications = Notification.query.filter_by(
+        employee_id=current_user.employee_id
+    ).order_by(
+        Notification.id.desc()
+    ).all()
     attendances = Attendance.query.filter_by(
         employee_id=current_user.employee_id
     ).order_by(
@@ -2439,7 +2444,8 @@ def worker_dashboard():
         "worker_dashboard.html",
         today_attendance=today_attendance,
         attendances=attendances,
-        announcements=announcements
+        announcements=announcements,
+        notifications=notifications
     )
 
 @app.route("/clock-in")
@@ -2746,6 +2752,26 @@ def approve_leave(id):
 
     leave.status = "Approved"
 
+    notification = Notification(
+
+        employee_id=
+        leave.employee_id,
+
+        title=
+        "Leave Request Approved",
+
+        message=
+        f"Your leave request from "
+        f"{leave.start_date} to "
+        f"{leave.end_date} has been approved."
+    )
+
+    db.session.add(
+        notification
+    )
+
+    
+
     db.session.commit()
 
     flash(
@@ -2768,6 +2794,24 @@ def reject_leave(id):
     )
 
     leave.status = "Rejected"
+
+    notification = Notification(
+
+        employee_id=
+        leave.employee_id,
+
+        title=
+        "Leave Request Rejected",
+
+        message=
+        f"Your leave request from "
+        f"{leave.start_date} to "
+        f"{leave.end_date} has been rejected."
+    )
+
+    db.session.add(
+        notification
+    )
 
     db.session.commit()
 
@@ -3428,6 +3472,58 @@ def create_payroll():
     return render_template(
         "create_payroll.html",
         workers=workers
+    )
+
+@app.route(
+    "/pay-payroll/<int:id>"
+)
+@login_required
+def pay_payroll(id):
+
+    if current_user.role != "admin":
+
+        flash(
+            "Access Denied"
+        )
+
+        return redirect(
+            "/dashboard"
+        )
+
+    payroll = Payroll.query.get_or_404(
+        id
+    )
+
+    payroll.payment_status = "Paid"
+
+    notification = Notification(
+
+        employee_id=
+        payroll.employee_id,
+
+        title=
+        "Salary Payment",
+
+        message=
+        f"Your salary for "
+        f"{payroll.month} "
+        f"has been paid. "
+        f"Amount: ₦{payroll.net_salary}"
+
+    )
+
+    db.session.add(
+        notification
+    )
+
+    db.session.commit()
+
+    flash(
+        "Payroll Marked As Paid"
+    )
+
+    return redirect(
+        "/payroll"
     )
 
 @app.route("/payroll")

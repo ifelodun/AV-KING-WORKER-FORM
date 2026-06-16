@@ -2905,21 +2905,20 @@ def attendance_dashboard():
         Attendance.id.desc()
     ).all()
 
+    workers = {
+        worker.employee_id: worker.fullname
+        for worker in User.query.filter_by(
+            role="worker"
+        ).all()
+    }
+
     return render_template(
-
         "attendance_dashboard.html",
-
-        total_attendance=
-        total_attendance,
-
-        late_workers=
-        late_workers,
-
-        today_attendance=
-        today_attendance,
-
-        attendances=
-        attendances
+        total_attendance=total_attendance,
+        late_workers=late_workers,
+        today_attendance=today_attendance,
+        attendances=attendances,
+        workers=workers
     )
 class Announcement(db.Model):
 
@@ -3163,7 +3162,7 @@ getSampleStyleSheet
 @login_required
 def export_attendance_pdf():
 
-    settings = Settings.query.first()
+    settings = CompanySettings.query.first()
 
     if settings:
         company_name = settings.company_name

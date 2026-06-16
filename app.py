@@ -2558,6 +2558,8 @@ def clock_in():
         username=
         current_user.username,
 
+        fullname=current_user.fullname,
+        
         attendance_date=today,
 
         clock_in=now,

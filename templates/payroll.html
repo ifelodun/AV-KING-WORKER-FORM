@@ -108,6 +108,17 @@
 
             {% endif %}
 
+            {% if payroll.payment_status != "Paid" %}
+
+<a
+href="/pay-payroll/{{ payroll.id }}"
+class="btn btn-success btn-sm">
+
+Mark As Paid
+
+</a>
+
+{% endif %}
         </div>
 
     </div>

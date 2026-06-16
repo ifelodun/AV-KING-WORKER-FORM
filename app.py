@@ -3551,7 +3551,39 @@ def payroll():
         "payroll.html",
         payrolls=payrolls
     )
+@app.route("/payrolls")
+@login_required
+def payrolls():
 
+    if current_user.role != "admin":
+        return redirect("/dashboard")
+
+    payrolls = Payroll.query.order_by(
+        Payroll.id.desc()
+    ).all()
+
+    return render_template(
+        "payrolls.html",
+        payrolls=payrolls
+    )
+
+@app.route("/pay-payroll/<int:id>")
+@login_required
+def pay_payroll(id):
+
+    if current_user.role != "admin":
+        return redirect("/dashboard")
+
+    payroll = Payroll.query.get_or_404(id)
+
+    payroll.payment_status = "Paid"
+
+    db.session.commit()
+
+    flash("Payroll marked as paid")
+
+    return redirect("/payrolls")
+    
 @app.route(
     "/payslip/<int:id>"
 )

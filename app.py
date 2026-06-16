@@ -14,7 +14,19 @@ from werkzeug.utils import secure_filename
 from flask_mail import Mail, Message
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle
+)
 
+from reportlab.lib import colors
+
+from reportlab.lib.styles import getSampleStyleSheet
+
+from flask import send_file
 import os
 import random
 
@@ -1269,8 +1281,11 @@ def workers():
 )
 @login_required
 def edit_worker(id):
-
-    if current_user.role != "admin":
+    if current_user.role not in [
+        "admin",
+        "super_admin"
+    ]:
+    
 
         flash("Access Denied")
 
@@ -1308,7 +1323,8 @@ def edit_worker(id):
         worker.department = request.form.get(
             "department"
         )
-
+        worker.position = request.form["position"]
+        
         worker.status = request.form.get(
             "status"
         )
@@ -3143,42 +3159,133 @@ from reportlab.platypus import (
 from reportlab.lib.styles import \
 getSampleStyleSheet
 
-@app.route(
-    "/export-attendance-pdf"
-)
+@app.route("/export-attendance-pdf")
 @login_required
 def export_attendance_pdf():
 
-    pdf = SimpleDocTemplate(
-        "attendance.pdf"
-    )
+    settings = Settings.query.first()
+
+    if settings:
+        company_name = settings.company_name
+        company_address = settings.company_address
+        company_phone = settings.company_phone
+        company_email = settings.company_email
+    else:
+        company_name = "Company Name"
+        company_address = "Company Address"
+        company_phone = "Company Phone"
+        company_email = "Company Email"
+
+    filename = "attendance_report.pdf"
+
+    pdf = SimpleDocTemplate(filename)
 
     styles = getSampleStyleSheet()
 
-    content = []
+    elements = []
 
-    records = Attendance.query.all()
+    elements.append(
+        Paragraph(company_name, styles["Title"])
+    )
+
+    elements.append(
+        Paragraph(company_address, styles["Normal"])
+    )
+
+    elements.append(
+        Paragraph(
+            f"Phone: {company_phone}",
+            styles["Normal"]
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            f"Email: {company_email}",
+            styles["Normal"]
+        )
+    )
+
+    elements.append(
+        Spacer(1, 20)
+    )
+
+    elements.append(
+        Paragraph(
+            "ATTENDANCE REPORT",
+            styles["Heading1"]
+        )
+    )
+
+    elements.append(
+        Paragraph(
+            f"Generated On: {nigeria_time()}",
+            styles["Normal"]
+        )
+    )
+
+    elements.append(
+        Spacer(1, 20)
+    )
+
+    records = Attendance.query.order_by(
+        Attendance.id.desc()
+    ).all()
+
+    data = [[
+        "Employee ID",
+        "Worker Name",
+        "Date",
+        "Clock In",
+        "Clock Out",
+        "Status"
+    ]]
 
     for record in records:
 
-        content.append(
+        data.append([
 
-            Paragraph(
+            str(record.employee_id),
 
-                f"{record.employee_id} "
-                f"{record.username} "
-                f"{record.status}",
+            str(record.username),
 
-                styles["BodyText"]
-            )
-        )
+            str(record.attendance_date),
 
-    pdf.build(content)
+            str(record.clock_in),
+
+            str(record.clock_out or "-"),
+
+            str(record.status)
+
+        ])
+
+    table = Table(data)
+
+    table.setStyle(
+        TableStyle([
+
+            ("BACKGROUND", (0,0), (-1,0), colors.grey),
+
+            ("TEXTCOLOR", (0,0), (-1,0), colors.whitesmoke),
+
+            ("GRID", (0,0), (-1,-1), 1, colors.black),
+
+            ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
+
+            ("ALIGN", (0,0), (-1,-1), "CENTER")
+
+        ])
+    )
+
+    elements.append(table)
+
+    pdf.build(elements)
 
     return send_file(
-        "attendance.pdf",
+        filename,
         as_attachment=True
     )
+    
 @app.route(
     "/toggle-theme"
 )

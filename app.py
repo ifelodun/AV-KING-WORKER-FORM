@@ -1830,7 +1830,18 @@ def edit_department(id):
     flash("Department updated")
 
     return redirect("/departments")
+@app.route("/my-payroll")
+@login_required
+def my_payroll():
 
+    payrolls = Payroll.query.filter_by(
+        employee_id=current_user.employee_id
+    ).all()
+
+    return render_template(
+        "my_payroll.html",
+        payrolls=payrolls
+    )
 @app.route("/add-department", methods=["POST"])
 @login_required
 def add_department():

@@ -1270,45 +1270,77 @@ def workers():
 @login_required
 def edit_worker(id):
 
-    if not admin_required():
+    if current_user.role != "admin":
 
-        return redirect(
-            "/dashboard"
-        )
+        flash("Access Denied")
 
-    worker = User.query.get_or_404(
-        id
-    )
+        return redirect("/dashboard")
+
+    worker = User.query.get_or_404(id)
 
     if request.method == "POST":
 
-        worker.username = request.form[
+        username = request.form.get(
             "username"
-        ]
-
-        worker.email = request.form[
-            "email"
-        ]
-
-        db.session.commit()
-
-        log_action(
-            current_user.username,
-            f"Edited Worker {worker.username}"
         )
 
-        flash(
-            "Worker Updated"
+        existing_user = User.query.filter(
+            User.username == username,
+            User.id != worker.id
+        ).first()
+
+        if existing_user:
+
+            flash(
+                "Username already exists"
+            )
+
+            return redirect(
+                f"/edit-worker/{id}"
+            )
+
+        worker.fullname = request.form.get(
+            "fullname"
         )
 
-        return redirect(
-            "/workers"
+        worker.username = username
+
+        worker.department = request.form.get(
+            "department"
         )
+
+        worker.status = request.form.get(
+            "status"
+        )
+
+        try:
+
+            db.session.commit()
+
+            flash(
+                "Worker Updated Successfully"
+            )
+
+            return redirect(
+                "/workers"
+            )
+
+        except Exception as e:
+
+            db.session.rollback()
+
+            flash(
+                f"Error: {str(e)}"
+            )
+
+            return redirect(
+                f"/edit-worker/{id}"
+            )
 
     return render_template(
         "edit_worker.html",
         worker=worker
-    )
+        )
 
 
 @app.route(

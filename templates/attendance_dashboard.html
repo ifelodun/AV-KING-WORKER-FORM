@@ -4,53 +4,209 @@
 
 <div class="container mt-4">
 
-    <h2>Attendance Dashboard</h2>
+    <h2 class="mb-4">
 
-    <div class="row mt-4">
+        Attendance Dashboard
+
+    </h2>
+
+    <div class="row">
 
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow">
+
+            <div class="card shadow text-center">
+
                 <div class="card-body">
+
                     <h5>Total Attendance Records</h5>
-                    <h2>{{ total_attendance }}</h2>
+
+                    <h2>
+
+                        {{ total_attendance }}
+
+                    </h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow">
+
+            <div class="card shadow text-center">
+
                 <div class="card-body">
+
                     <h5>Late Workers</h5>
+
                     <h2 class="text-danger">
+
                         {{ late_workers }}
+
                     </h2>
+
                 </div>
+
             </div>
+
         </div>
 
         <div class="col-md-4 mb-3">
-            <div class="card text-center shadow">
+
+            <div class="card shadow text-center">
+
                 <div class="card-body">
+
                     <h5>Today's Attendance</h5>
+
                     <h2 class="text-success">
+
                         {{ today_attendance }}
+
                     </h2>
+
                 </div>
+
             </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow mt-4">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+
+                Attendance Records
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            {% if attendances %}
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Employee ID</th>
+                            <th>Full Name</th>
+                            <th>Date</th>
+                            <th>Clock In</th>
+                            <th>Clock Out</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for attendance in attendances %}
+
+                        <tr>
+
+                            <td>
+                                {{ attendance.employee_id }}
+                            </td>
+
+                            <td>
+                                {{ attendance.fullname }}
+                            </td>
+
+                            <td>
+                                {{ attendance.attendance_date }}
+                            </td>
+
+                            <td>
+                                {{ attendance.clock_in }}
+                            </td>
+
+                            <td>
+                                {{ attendance.clock_out or "-" }}
+                            </td>
+
+                            <td>
+
+                                {% if attendance.status == "Present" %}
+
+                                <span class="badge bg-success">
+
+                                    Present
+
+                                </span>
+
+                                {% elif attendance.status == "Late" %}
+
+                                <span class="badge bg-warning">
+
+                                    Late
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {{ attendance.status }}
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-warning">
+
+                No attendance records found.
+
+            </div>
+
+            {% endif %}
+
         </div>
 
     </div>
 
     <div class="mt-4">
-        <a href="/attendance-history"
-           class="btn btn-primary">
-            View Attendance Records
+
+        <a
+        href="/attendance-history"
+        class="btn btn-primary">
+
+            Attendance History
+
         </a>
 
-        <a href="/dashboard"
-           class="btn btn-secondary">
-            Back to Dashboard
+        <a
+        href="/dashboard"
+        class="btn btn-secondary">
+
+            Back To Dashboard
+
         </a>
+
     </div>
 
 </div>

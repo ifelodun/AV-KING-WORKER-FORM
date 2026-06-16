@@ -3168,8 +3168,8 @@ def export_attendance_pdf():
 
     if settings:
         company_name = settings.company_name
-        company_address = settings.company_address
-        company_phone = settings.company_phone
+        company_address = settings.address
+        company_phone = settings.phone_number
         company_email = settings.company_email
     else:
         company_name = "Company Name"

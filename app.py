@@ -2343,6 +2343,9 @@ class Attendance(db.Model):
         db.String(100)
     )
 
+    fullname = db.Column(
+        db.String(200)
+    )
     attendance_date = db.Column(
         db.Date
     )

@@ -111,6 +111,41 @@
 
     </div>
 
+            {% if notifications %}
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-warning">
+
+        <h5>Notifications</h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% for notification in notifications %}
+
+        <div class="alert alert-info">
+
+            <strong>
+
+                {{ notification.title }}
+
+            </strong>
+
+            <br>
+
+            {{ notification.message }}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endif %}
 
             <div class="card shadow mb-4">
 

@@ -3644,7 +3644,7 @@ def pay_payroll(id):
         )
 
         return redirect(
-            "/dashboard"
+            "/worker-dashboard"
         )
 
     payroll = Payroll.query.get_or_404(
